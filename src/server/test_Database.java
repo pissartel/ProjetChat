@@ -45,6 +45,7 @@ public class test_Database {
 		try {
 			ArrayList<Topic> topics = forum.loadTopics() ;
 			topics.forEach(x->System.out.println(x.toString()));
+			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

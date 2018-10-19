@@ -162,9 +162,9 @@ public class Client {
 	}
 
 
-	public  Topic  loadTopic(String topicTitle) throws ResponseException{
+	public  Topic  loadTopic(int index) throws ResponseException{
 
-		LoadTopicRequest req = new LoadTopicRequest(topicTitle);
+		LoadTopicRequest req = new LoadTopicRequest(index);
 
 		try {
 
@@ -178,8 +178,7 @@ public class Client {
 				return currentTopic;
 			}	
 			else System.out.println("Topic vide");
-			return loadTopic(null);
-
+			return null;
 
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block

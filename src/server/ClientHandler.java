@@ -154,9 +154,7 @@ public class ClientHandler implements Runnable {
 						if (islogged){
 							LoadTopicRequest ltreq = (LoadTopicRequest) request;
 							try {
-								Topic topic = topicList.stream().filter(x-> x.getTitle()
-										.equals(ltreq.topicTitle))
-										.collect(Collectors.toList()).get(0);
+								Topic topic = topicList.get(ltreq.index);
 								out.writeObject(new LoadTopicResponse(topic));
 								this.out.flush();
 							}

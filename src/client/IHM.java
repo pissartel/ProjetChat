@@ -5,8 +5,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -15,8 +19,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import shared.Topic;
@@ -72,7 +80,7 @@ public class IHM {
 
 		//add to frame
 		f.add(labelHead);
-		f.add(risiLabel);
+		//f.add(risiLabel);
 		f.add(labelLogin);
 		f.add(textfieldLog);
 		f.add(labelPass);
@@ -136,34 +144,42 @@ public class IHM {
 		// reset du frame
 		f.getContentPane().removeAll();
 		f.repaint();
-
+		
+		int page = 1;
 		ArrayList<Topic> topicList = client.loadForum();
-
 
 		JLabel labelHead =new JLabel("Liste des topics"); 
 		labelHead.setForeground(Color.BLUE);
 		labelHead.setBounds(50,10,250, 50);  
 		labelHead.setFont(new Font("Serif", Font.PLAIN, 30));
 
-		// Creation de la liste
+		//Creation de la liste
 		DefaultListModel<String> listModel = new DefaultListModel<>();
-		topicList.forEach(x-> listModel.addElement( x.getTitle() + "\t \t \t \t \t \t \t de :" + x.getAuthor()));
+		topicList.forEach(x-> listModel.addElement( x.getTitle() + "\t\t\t\t de : \t " + x.getAuthor()));
 		JList topicJList = new JList<>(listModel);
-		topicJList.setBounds(50,50,500, 500);  
+		topicJList.setBounds(50,55,750, 500);  
+		topicJList.setFont(new Font("Arial", Font.PLAIN, 15));
 
+		// scrollbar
+		JScrollPane scrollPane = new JScrollPane();
+		//scrollPane.setLayoutOrientation(JList.VERTICAL);
+		//scrollPane.setBounds(50,55,750, 500);
+		//scrollPane.setViewportView(topicJList);
+		//scrollPane.add(topicJList);
+		
 		//Créer compte bouton
 		JButton bnew=new JButton("Nouveau topic");    
-		bnew.setBounds(550,50,140, 40);
-
-		JButton bco=new JButton("Se connecter");    
-		bco.setBounds(550,100,140, 40);
+		bnew.setBounds(50,555,140, 40);
 
 		//add to frame
 		f.add(labelHead);
 		f.add(topicJList);
+		//f.add(scrollPane);
+		f.add(bnew);
+		//labelList.forEach(x->f.add(x));
 		f.setLayout(null);    
 
-		// Fonctions exécutées lors de l'appui
+		// Fonction exécutée pour création de topic
 		bnew.addActionListener(new ActionListener() {
 
 			@Override
@@ -177,53 +193,58 @@ public class IHM {
 
 			}          
 		});
-		bco.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					if(client.authenticate(textfieldLog.getText(), textfieldPass.getText())) {
-						topicMenu( f, client) ;
+		// Fonction exécutée pour l'ouverture d'un topic
+		topicJList.addMouseListener( new MouseAdapter() {
+			public void mouseClicked(MouseEvent mouseEvent) {
+				JList theList = (JList) mouseEvent.getSource();
+				if (mouseEvent.getClickCount() == 2) {
+					int index = theList.locationToIndex(mouseEvent.getPoint());
+					if (index >= 0) {
+						//Object o = theList.getModel().getElementAt(index);
+						try {
+							topicFrame( f, client, client.loadTopic(theList.getSelectedIndex()));
+						} catch (ResponseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-					else {
-						labelMsg.setText("Mauvais identifiant et/ou mot de passe :(");
-						labelMsg.setForeground(Color.RED);
-					}
-
-				} catch (ResponseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-			}          
+			}
 		});
-
 	}
 
 	public static void newTopic(JFrame topicListFrame, Client client) throws ResponseException {
 		JFrame newTopicFrame = new JFrame("Nouveau Topic");
-		newTopicFrame.setSize(300,300); // on set la size du frame
+		newTopicFrame.setSize(500,300); // on set la size du frame
 		newTopicFrame.setLocationRelativeTo(null) ; // on centre le frame
 		//submit button
 		JButton b=new JButton("Ok");    
-		b.setBounds(250,250,140, 40);    
+		b.setBounds(240,220,140, 40);    
 
-		//enter login 
+		//enter title 
 		JLabel labelTitle = new JLabel();		
 		labelTitle.setText("Titre du Topic :");
-		labelTitle.setFont(new Font("Arial", Font.PLAIN, 20));
-		labelTitle.setBounds(10, 100, 300, 30);
+		labelTitle.setFont(new Font("Arial", Font.PLAIN, 15));
+		labelTitle.setBounds(10, 10, 300, 30);
 		//textfield to enter login
 		JTextField textfieldTitle= new JTextField();
-		textfieldTitle.setBounds(100, 100, 200, 30);
+		textfieldTitle.setBounds(125, 10, 350, 30);
 
-		//enter password 
+		//enter message 
 		JLabel labelMsg = new JLabel();		
 		labelMsg.setText("Message :");
-		labelMsg.setFont(new Font("Arial", Font.PLAIN, 20));
-		labelMsg.setBounds(10, 200, 300, 30);
-		//textfield to enter login
-		JTextField textfieldMsg= new JTextField();
-		textfieldMsg.setBounds(100, 200, 200, 30);
+		labelMsg.setFont(new Font("Arial", Font.PLAIN, 15));
+		labelMsg.setBounds(10, 50, 300, 30);
+		JTextArea textAreadMsg= new JTextArea();
+		textAreadMsg.setBounds(125, 50, 350, 150);
+
+		// scroll bar
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(textAreadMsg);
+		scrollPane.setBounds(125, 50, 350, 150);
+		//textAreadMsg.add(zoneScrolable,BorderLayout.CENTER);
+		//      setVisible(true);
 
 
 
@@ -232,11 +253,12 @@ public class IHM {
 		newTopicFrame.add(textfieldTitle);
 
 		newTopicFrame.add(labelMsg);
-		newTopicFrame.add(textfieldMsg);
+		//newTopicFrame.add(textAreadMsg);
+		newTopicFrame.add(scrollPane);
 		newTopicFrame.add(b);    
 		newTopicFrame.setLayout(null);    
 		newTopicFrame.setVisible(true);    
-		newTopicFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
+		//newTopicFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
 
 		//action listener
 		b.addActionListener(new ActionListener() {
@@ -244,20 +266,116 @@ public class IHM {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					Topic newTopic = client.newTopic(textfieldTitle.getText(), textfieldMsg.getText());
+					Topic newTopic = client.newTopic(textfieldTitle.getText(), textAreadMsg.getText());
 				} catch (ResponseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				newTopicFrame.dispose();
-				topicMenu(topicListFrame,  client);
+				try {
+					topicMenu(topicListFrame,  client);
+				} catch (ResponseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}          
 		});
 	}         
 
+	public static void topicFrame(JFrame f, Client client, Topic topic) throws ResponseException {
+		// reset du frame
+		f.getContentPane().removeAll();
+		f.repaint();
 
+		JLabel labelHead =new JLabel(topic.getTitle()); 
+		labelHead.setForeground(Color.BLUE);
+		labelHead.setBounds(50,10,250, 50);  
+		labelHead.setFont(new Font("Serif", Font.PLAIN, 30));
 
+		// affichage du content
+		int largeur=750;
+		
+		JTextPane textPaneContent = new JTextPane();
+		textPaneContent.setEditable(false);
+		textPaneContent.setText(topic.getContent()); 
 
+		JScrollPane contentPane = new JScrollPane(textPaneContent);
+		contentPane.setVerticalScrollBarPolicy(
+                javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		contentPane.setBounds(50,55,largeur, 100); 
+		
+		// affichage des messages 
+		//JLabel labelMessages =new JLabel(topic.toStringMessages()); 
+		JTextPane textPaneMessage = new JTextPane();
+		textPaneMessage.setEditable(false);
+		textPaneMessage.setText(topic.toStringMessages());
+
+		JScrollPane messagesPane = new JScrollPane(textPaneMessage);
+		messagesPane.setVerticalScrollBarPolicy(
+                javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		messagesPane.setBounds(50,170,largeur, 205);
+
+		// zone de texte pour message
+		JTextArea textAreadMsg= new JTextArea();
+		textAreadMsg.setBounds(50, 350, largeur, 150);
+
+		// scroll bar
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(textAreadMsg);
+		scrollPane.setBounds(50, 425, largeur, 150);
+
+		// bouton envoyer message
+		JLabel labelMsg = new JLabel();		
+		labelMsg.setText("Message :");
+		labelMsg.setFont(new Font("Arial", Font.PLAIN, 15));
+		labelMsg.setBounds(50, 395, 300, 30);
+		
+		JButton bok=new JButton("Envoyer");    
+		bok.setBounds(655,580,140, 40);
+		JButton bre=new JButton("Retour");    
+		bre.setBounds(655,10,140, 40);
+
+		f.add(labelHead);
+		//f.add(labelContentHead);
+		f.add(contentPane);
+		f.add(messagesPane);
+		f.add(scrollPane);
+		f.add(bok);
+		f.add(bre);
+		f.add(labelMsg);
+
+		f.setLayout(null);    
+		f.setVisible(true);  
+
+		//action listener
+				bok.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						try {
+							topic.getMessages().add(client.newMessage(textAreadMsg.getText()));
+							textAreadMsg.setText("");
+							topicFrame( f, client, topic);
+							
+						} catch (ResponseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}          
+				});
+				
+				bre.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						try { topicMenu( f, client) ;
+							
+						} catch (ResponseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}				
+					}          
+				});	
+	}
 }
 
 

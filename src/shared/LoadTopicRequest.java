@@ -1,10 +1,10 @@
 package shared;
 
 public class LoadTopicRequest extends Request{
-	public String topicTitle ;
+	public Integer index ;
 	
-	public LoadTopicRequest(String topicTitle){
-		this.topicTitle = topicTitle;
+	public LoadTopicRequest(int index){
+		this.index = index;
 	}
 	
 	

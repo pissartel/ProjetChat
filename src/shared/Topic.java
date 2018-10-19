@@ -49,15 +49,22 @@ public class Topic extends Message{
 
 		}
 		else*/ 
-			StringBuilder builder = new StringBuilder();
-			builder.append("---------------------------------- " + this.getTitle() + " ---------------------------------- \n" + "De : " + this.getAuthor() + "\n" + this.getContent()+ "\n" + "----------------------------------"+ "\n");
-			
-			if (!(this.getMessages().isEmpty())) this.getMessages().forEach(x->builder.append(x.toString()));
-			return builder.toString();
+		StringBuilder builder = new StringBuilder();
+		builder.append("---------------------------------- " + this.getTitle() + " ---------------------------------- \n" + "De : " + this.getAuthor() + "\n" + this.getContent()+ "\n" + "----------------------------------"+ "\n");
+
+		if (!(this.getMessages().isEmpty())) this.getMessages().forEach(x->builder.append(x.toString()));
+		return builder.toString();
 	}
-	
+
+	public String toStringMessages() {
+		StringBuilder builder = new StringBuilder();
+		this.getMessages().forEach(x->builder.append(x.toString()));
+		return builder.toString();
+	}
+
+
 	public Topic addMessage(Message message) {
-		
+
 		if (!(this.getMessages().isEmpty())) this.getMessages().add(message);
 		else {
 			this.getMessages().add(message);
