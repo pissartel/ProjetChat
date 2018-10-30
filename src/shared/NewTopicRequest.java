@@ -1,7 +1,5 @@
 package shared;
 
-import server.User;
-
 public class NewTopicRequest extends Request {
 	private Topic newTopic;
 

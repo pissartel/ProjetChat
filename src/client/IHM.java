@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.BoundedRangeModel;
@@ -30,12 +31,21 @@ import javax.swing.SwingConstants;
 import shared.Topic;
 
 public class IHM {
+	public  JFrame mainFrame;
+	public JTextPane textPaneMessage;
+	public JScrollPane messagesPane ;
+	
+	public IHM(JFrame frame){
+		this.mainFrame=frame;
+	}
+
 	public static void main(String argv[]) {
 
 		// Frame principal
-		JFrame f = new JFrame("Chat Java");
-		f.setSize(850,650); // on set la size du frame
-		f.setLocationRelativeTo(null) ; // on centre le frame
+		IHM ihm = new IHM(new JFrame("Chat Java"));
+		//	JFrame mainFrame = new JFrame("Chat Java");
+		ihm.mainFrame.setSize(850,650); // on set la size du frame
+		ihm.mainFrame.setLocationRelativeTo(null) ; // on centre le frame
 
 		// en tête avec risitas
 		JLabel labelHead =new JLabel("Chat Java"); 
@@ -79,18 +89,18 @@ public class IHM {
 		labelMsg.setBounds(100, 500, 500, 30);
 
 		//add to frame
-		f.add(labelHead);
-		//f.add(risiLabel);
-		f.add(labelLogin);
-		f.add(textfieldLog);
-		f.add(labelPass);
-		f.add(textfieldPass);
-		f.add(bins);
-		f.add(bco);
-		f.add(labelMsg);
-		f.setLayout(null);    
-		f.setVisible(true);    
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ihm.mainFrame.add(labelHead);
+		//mainFrame.add(risiLabel);
+		ihm.mainFrame.add(labelLogin);
+		ihm.mainFrame.add(textfieldLog);
+		ihm.mainFrame.add(labelPass);
+		ihm.mainFrame.add(textfieldPass);
+		ihm.mainFrame.add(bins);
+		ihm.mainFrame.add(bco);
+		ihm.mainFrame.add(labelMsg);
+		ihm.mainFrame.setLayout(null);    
+		ihm.mainFrame.setVisible(true);    
+		ihm.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création du client
 		Client client = new Client();
@@ -105,6 +115,7 @@ public class IHM {
 					if(client.createAccount(textfieldLog.getText(), textfieldPass.getText())) {
 						labelMsg.setText("Compte créé. Vous pouvez vous connecter maintenant :)");
 						labelMsg.setForeground(Color.BLUE);
+						
 					}
 					else {
 						labelMsg.setText("Ce login est déjà utilisé :(");
@@ -124,7 +135,8 @@ public class IHM {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					if(client.authenticate(textfieldLog.getText(), textfieldPass.getText())) {
-						topicMenu( f, client) ;
+						ihm.mainFrame.setTitle(textfieldLog.getText());
+						topicMenu( ihm, client) ;
 					}
 					else {
 						labelMsg.setText("Mauvais identifiant et/ou mot de passe :(");
@@ -140,11 +152,11 @@ public class IHM {
 
 	}
 
-	public static void topicMenu(JFrame f, Client client) throws ResponseException {
+	public static void topicMenu(IHM ihm, Client client) throws ResponseException {
 		// reset du frame
-		f.getContentPane().removeAll();
-		f.repaint();
-		
+		ihm.mainFrame.getContentPane().removeAll();
+		ihm.mainFrame.repaint();
+
 		int page = 1;
 		ArrayList<Topic> topicList = client.loadForum();
 
@@ -166,18 +178,18 @@ public class IHM {
 		//scrollPane.setBounds(50,55,750, 500);
 		//scrollPane.setViewportView(topicJList);
 		//scrollPane.add(topicJList);
-		
+
 		//Créer compte bouton
 		JButton bnew=new JButton("Nouveau topic");    
 		bnew.setBounds(50,555,140, 40);
 
 		//add to frame
-		f.add(labelHead);
-		f.add(topicJList);
-		//f.add(scrollPane);
-		f.add(bnew);
-		//labelList.forEach(x->f.add(x));
-		f.setLayout(null);    
+		ihm.mainFrame.add(labelHead);
+		ihm.mainFrame.add(topicJList);
+		//ihm.mainFrame.add(scrollPane);
+		ihm.mainFrame.add(bnew);
+		//labelList.forEach(x->ihm.mainFrame.add(x));
+		ihm.mainFrame.setLayout(null);    
 
 		// Fonction exécutée pour création de topic
 		bnew.addActionListener(new ActionListener() {
@@ -185,7 +197,7 @@ public class IHM {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					newTopic(f, client);
+					newTopic(ihm, client);
 				} catch (ResponseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -203,7 +215,7 @@ public class IHM {
 					if (index >= 0) {
 						//Object o = theList.getModel().getElementAt(index);
 						try {
-							topicFrame( f, client, client.loadTopic(theList.getSelectedIndex()));
+							topicFrame( ihm, client, client.loadTopic(theList.getSelectedIndex()));
 						} catch (ResponseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -214,7 +226,8 @@ public class IHM {
 		});
 	}
 
-	public static void newTopic(JFrame topicListFrame, Client client) throws ResponseException {
+	public static void newTopic(IHM ihm , Client client) throws ResponseException {
+		JFrame topicListFrame = ihm.mainFrame;
 		JFrame newTopicFrame = new JFrame("Nouveau Topic");
 		newTopicFrame.setSize(500,300); // on set la size du frame
 		newTopicFrame.setLocationRelativeTo(null) ; // on centre le frame
@@ -244,7 +257,12 @@ public class IHM {
 		scrollPane.setViewportView(textAreadMsg);
 		scrollPane.setBounds(125, 50, 350, 150);
 		//textAreadMsg.add(zoneScrolable,BorderLayout.CENTER);
-		//      setVisible(true);
+		//      setVisible(true);
+
+		// Label d'erreur
+		JLabel labelErr = new JLabel();
+		labelErr.setBounds(50,250,140, 40); 
+		labelErr.setForeground(Color.RED);
 
 
 
@@ -252,7 +270,7 @@ public class IHM {
 		newTopicFrame.add(labelTitle);
 		newTopicFrame.add(textfieldTitle);
 
-		newTopicFrame.add(labelMsg);
+		newTopicFrame.add(labelErr);
 		//newTopicFrame.add(textAreadMsg);
 		newTopicFrame.add(scrollPane);
 		newTopicFrame.add(b);    
@@ -267,13 +285,19 @@ public class IHM {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					Topic newTopic = client.newTopic(textfieldTitle.getText(), textAreadMsg.getText());
-				} catch (ResponseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				newTopicFrame.dispose();
-				try {
-					topicMenu(topicListFrame,  client);
+
+					if (!(newTopic==null)) {
+						newTopicFrame.dispose();
+
+						try {
+							//topicMenu(topicListFrame,  client);
+							topicMenu(ihm,  client);
+						} catch (ResponseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					else labelErr.setText("Vous avez dejà créé ce topic !");
 				} catch (ResponseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -282,10 +306,10 @@ public class IHM {
 		});
 	}         
 
-	public static void topicFrame(JFrame f, Client client, Topic topic) throws ResponseException {
+	public static void topicFrame(IHM ihm, Client client, Topic topic) throws ResponseException {
 		// reset du frame
-		f.getContentPane().removeAll();
-		f.repaint();
+		ihm.mainFrame.getContentPane().removeAll();
+		ihm.mainFrame.repaint();
 
 		JLabel labelHead =new JLabel(topic.getTitle()); 
 		labelHead.setForeground(Color.BLUE);
@@ -294,16 +318,16 @@ public class IHM {
 
 		// affichage du content
 		int largeur=750;
-		
+
 		JTextPane textPaneContent = new JTextPane();
 		textPaneContent.setEditable(false);
 		textPaneContent.setText(topic.getContent()); 
 
 		JScrollPane contentPane = new JScrollPane(textPaneContent);
 		contentPane.setVerticalScrollBarPolicy(
-                javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+				javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		contentPane.setBounds(50,55,largeur, 100); 
-		
+
 		// affichage des messages 
 		//JLabel labelMessages =new JLabel(topic.toStringMessages()); 
 		JTextPane textPaneMessage = new JTextPane();
@@ -312,8 +336,11 @@ public class IHM {
 
 		JScrollPane messagesPane = new JScrollPane(textPaneMessage);
 		messagesPane.setVerticalScrollBarPolicy(
-                javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+				javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		messagesPane.setBounds(50,170,largeur, 205);
+		
+		ihm.textPaneMessage = textPaneMessage;
+		ihm.messagesPane =  messagesPane;
 
 		// zone de texte pour message
 		JTextArea textAreadMsg= new JTextArea();
@@ -329,53 +356,55 @@ public class IHM {
 		labelMsg.setText("Message :");
 		labelMsg.setFont(new Font("Arial", Font.PLAIN, 15));
 		labelMsg.setBounds(50, 395, 300, 30);
-		
+
 		JButton bok=new JButton("Envoyer");    
 		bok.setBounds(655,580,140, 40);
 		JButton bre=new JButton("Retour");    
 		bre.setBounds(655,10,140, 40);
 
-		f.add(labelHead);
-		//f.add(labelContentHead);
-		f.add(contentPane);
-		f.add(messagesPane);
-		f.add(scrollPane);
-		f.add(bok);
-		f.add(bre);
-		f.add(labelMsg);
+		ihm.mainFrame.add(labelHead);
+		//ihm.mainFrame.add(labelContentHead);
+		ihm.mainFrame.add(contentPane);
+		ihm.mainFrame.add(messagesPane);
+		ihm.mainFrame.add(scrollPane);
+		ihm.mainFrame.add(bok);
+		ihm.mainFrame.add(bre);
+		ihm.mainFrame.add(labelMsg);
 
-		f.setLayout(null);    
-		f.setVisible(true);  
+		ihm.mainFrame.setLayout(null);    
+		ihm.mainFrame.setVisible(true);  
 
 		//action listener
-				bok.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						try {
-							topic.getMessages().add(client.newMessage(textAreadMsg.getText()));
-							textAreadMsg.setText("");
-							topicFrame( f, client, topic);
-							
-						} catch (ResponseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-					}          
-				});
-				
-				bre.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						try { topicMenu( f, client) ;
-							
-						} catch (ResponseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}				
-					}          
-				});	
+		bok.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					topic.getMessages().add(client.newMessage(textAreadMsg.getText()));
+					textAreadMsg.setText("");
+					//topicFrame( ihm.mainFrame, client, topic);
+
+				} catch (ResponseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}          
+		});
+
+		bre.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try { topicMenu( ihm, client) ;
+
+				} catch (ResponseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+			}          
+		});	
+
+		// On lance le thread pour refresh les nouveau messages envoyés
+		Thread t1 = new Thread(new RefreshTopic( client.getOIS(), client, ihm,  topic) );
+		t1.start();
 	}
 }
-
-

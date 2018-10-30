@@ -129,6 +129,10 @@ public class Client {
 				else System.out.println("le topic n'a pas pu être créé :(");
 				return newTopicCreated;
 			}
+			else if(rep.getClass().getSimpleName().equals("NewTopicResponseFailure")) {
+				System.out.println("Vous avez dejà créé ce topic ! ");
+				return null;
+			}
 			else throw new ResponseException();
 
 		}catch (IOException | ClassNotFoundException e) {
@@ -186,14 +190,15 @@ public class Client {
 			return null;
 		}
 	}
-	
+
 	public Message newMessage(String Content ) throws ResponseException{
 		Message newMessage = new Message(this.user, Content);
 		NewMessageRequest req = new NewMessageRequest(newMessage, currentTopic);
 		try {
 			this.out.writeObject(req);
 			this.out.flush();
-			Response rep=this.readResponse();
+			return newMessage;
+			/*Response rep=this.readResponse();
 
 			if (rep.getClass().getSimpleName().equals("NewMessageResponse")) {
 				// On refresh la page 
@@ -202,16 +207,17 @@ public class Client {
 				return newMessage;
 			}	
 			else throw new ResponseException();
-		} catch (IOException | ClassNotFoundException e) {
+			*/
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
 
 
-	private synchronized  Response readResponse() throws ClassNotFoundException, IOException {
+	public synchronized  Response readResponse() throws ClassNotFoundException, IOException {
 		/*
 		 * TODO
 		 * Here you should read the server response from the input stream, then print it.
@@ -220,6 +226,13 @@ public class Client {
 		return (Response) in.readObject() ;
 
 	}
+	
+	public ObjectInputStream getOIS() {
+		return this.in;
+	}
+	
 
-
+	public Socket getSocket() {
+		return this.socket;
+	}
 }

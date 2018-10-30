@@ -9,7 +9,7 @@ public class Topic extends Message{
 	private ArrayList<Message> messages;
 	private String content;
 	private String title;
-
+	
 	public Topic(User author, String title, String content) {
 		super(author, content);
 		// TODO Auto-generated constructor stub

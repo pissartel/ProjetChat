@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /* 
  * thread qui permet de gérer l'attente de client, 
@@ -28,11 +29,21 @@ public class Server implements Runnable {
 		Socket client;
 		try {
 			boolean running = true;
+			ArrayList<ClientHandler> ClientList = new ArrayList<ClientHandler>();
 			while (running) {
 				System.out.println("En attente de accept...");
 				client = this.server.accept();
 				System.out.println("accepté");
-				t1 = new Thread(new ClientHandler(client));
+				
+				//On créer un nouveau CLientHandler
+				ClientHandler ch = new ClientHandler(client);
+				// On l'ajoute à la liste des ClientHandler
+				ClientList.add(ch);
+				// MAJ dans chaque clienthandlers
+				ClientList.forEach(x->x.setOtherClient(ClientList));
+				// On lance le thread
+				t1 = new Thread(ch);
+				
 				System.out.println("on démarre client handler");
 				t1.start();	
 			}

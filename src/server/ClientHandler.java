@@ -21,6 +21,8 @@ public class ClientHandler implements Runnable {
 	private ObjectOutputStream out;
 	private UserDatabase userDatabase;
 	private ForumDatabase forumDatabase;
+	private ArrayList<ClientHandler> listClientHandler;
+	private ArrayList<Thread> otherCLient;
 	private User userClient;
 
 	public static final String UDB_FILE_NAME ="userdatabase.db";	
@@ -30,11 +32,17 @@ public class ClientHandler implements Runnable {
 	public boolean islogged = false;
 
 	//public ArrayList<Topic> forum;
-
 	public ClientHandler(Socket client) {
 		this.client = client;
 		this.userDatabase=new UserDatabase(UDB_FILE_NAME);
 		this.forumDatabase=new ForumDatabase(FDB_FILE_NAME);
+	}
+	
+	public ClientHandler(Socket client, ArrayList<ClientHandler> listClientHandler) {
+		this.client = client;
+		this.userDatabase=new UserDatabase(UDB_FILE_NAME);
+		this.forumDatabase=new ForumDatabase(FDB_FILE_NAME);
+		this.listClientHandler=listClientHandler;
 	}
 
 
@@ -56,7 +64,7 @@ public class ClientHandler implements Runnable {
 				Request request;
 				request=(Request) in.readObject();
 
-				System.out.println(nb_tour);
+				//System.out.println(nb_tour);
 
 				try {	
 					switch(request.getClass().getSimpleName()) {
@@ -125,11 +133,18 @@ public class ClientHandler implements Runnable {
 						if (islogged){
 							//		ArrayList<Topic> topicList = forumDatabase.loadTopics();
 
-							out.writeObject(new NewTopicResponse(ntreq.getTopic()));
-							this.out.flush();
-							//MAJ du forum
-							topicList.add(ntreq.getTopic());
-							forumDatabase.saveTopics(topicList);
+							// on vérifie si le topic a pas deja été fait 
+							if(!topicList.stream().map(x-> x.getTitle())
+									.collect(Collectors.toList()).contains(ntreq.getTopic().getTitle())) {
+
+								out.writeObject(new NewTopicResponse(ntreq.getTopic()));
+								this.out.flush();
+								//MAJ du forum
+								topicList.add(ntreq.getTopic());
+								forumDatabase.saveTopics(topicList);
+							}
+							else 	out.writeObject(new NewTopicResponseFailure());
+
 						}
 
 					case "DeleteTopicRequest":
@@ -166,12 +181,17 @@ public class ClientHandler implements Runnable {
 					case "NewMessageRequest":
 						if (islogged){
 							NewMessageRequest nmreq = (NewMessageRequest) request;	
-							System.out.println("msg recu");
+							System.out.println("msg ");
+
+							System.out.println(nmreq.getTopic().toStringMessages());
 
 							//int index=topicList.stream().filter(x-> x.getTitle().contains(nmreq.topic.getTitle()))
 							topicList.set(topicList.stream().map(x -> x.getTitle())
-									.collect(Collectors.toList()).indexOf(nmreq.topic.getTitle()), 
-									nmreq.topic.addMessage(nmreq.getMessage()));
+									.collect(Collectors.toList()).indexOf(nmreq.getTopic().getTitle()), 
+									nmreq.getTopic().addMessage(nmreq.getMessage()));
+							System.out.println(nmreq.getTopic().toStringMessages());
+
+							
 							System.out.println("msg sauvegardé");
 
 							// MAJ du forum
@@ -180,6 +200,22 @@ public class ClientHandler implements Runnable {
 
 							out.writeObject(new NewMessageResponse());
 							this.out.flush();
+
+							// On Informe les autres
+
+							listClientHandler.forEach(x->{
+								try {
+									//nmreq.getTopic().addMessage(nmreq.getMessage());
+									
+									x.out.writeObject(new Notification(nmreq.getTopic(), nmreq.getMessage()) );
+
+
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							});
+
 						}
 
 						//e.printStackTrace();
@@ -210,4 +246,16 @@ public class ClientHandler implements Runnable {
 		return (Response) in.readObject() ;
 
 	}
+
+
+	public ArrayList<Thread> getOtherCLient() {
+		return otherCLient;
+	}
+
+
+	public void setOtherClient(ArrayList<ClientHandler> listClientHandler) {
+		this.listClientHandler = listClientHandler;
+	}
+
+	
 }

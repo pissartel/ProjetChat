@@ -34,12 +34,7 @@ public class UserDatabase {
 		this.file = new File(fileName);
 	}
 
-	/**
-	 * Load the list of Pokemons stored inside the file and returns it
-	 * @return
-	 * @throws IOException
-	 * @throws ClassNotFoundException 
-	 */
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList<User> loadData() throws IOException, ClassNotFoundException {
 		ArrayList<User> data = new ArrayList<User>();
@@ -61,11 +56,6 @@ public class UserDatabase {
 		return data;
 	}
 
-	/**
-	 * Save the list of Pokémons received in parameters
-	 * @param data the list of Pokémons
-	 * @throws IOException 
-	 */
 	public void saveData(ArrayList<User> data) throws IOException {
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);

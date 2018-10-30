@@ -2,11 +2,11 @@ package shared;
 
 public class NewMessageRequest extends Request {
 	private Message message;
-	public Topic topic;
+	private Topic topic;
 
 	public NewMessageRequest(Message message, Topic topic) {
 		this.setMessage(message);
-		this.topic=topic;
+		this.setTopic(topic);
 	}
 
 	public Message getMessage() {
@@ -16,6 +16,15 @@ public class NewMessageRequest extends Request {
 	public void setMessage(Message message) {
 		this.message = message;
 	}
+
+	public Topic getTopic() {
+		return topic;
+	}
+
+	public void setTopic(Topic topic) {
+		this.topic = topic;
+	}
+	
 	
 
 }
