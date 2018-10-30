@@ -404,7 +404,8 @@ public class IHM {
 		});	
 
 		// On lance le thread pour refresh les nouveau messages envoyés
-		Thread t1 = new Thread(new RefreshTopic( client.getOIS(), client, ihm,  topic) );
+		RefreshTopic RT = new RefreshTopic( client.getOIS(), client, ihm,  topic);
+		Thread t1 = new Thread(RT );
 		t1.start();
 	}
 }

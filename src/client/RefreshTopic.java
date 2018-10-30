@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.JScrollPane;
+
 import server.ForumDatabase;
 import server.UserDatabase;
 import shared.*;
@@ -32,14 +34,13 @@ public class RefreshTopic implements Runnable  {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		Response rep;
-		Notification notif;
+		Response rep = new Response();
+		Notification notif= new Notification(topic, topic);
 		System.out.println("on a run");
 		StringBuilder builder = new StringBuilder();
 		try {		
 
 			while (true) {
-			
 				rep = client.readResponse();
 				System.out.println(rep.getClass().getSimpleName());
 				
@@ -54,8 +55,16 @@ public class RefreshTopic implements Runnable  {
 							builder.append(ihm.textPaneMessage.getText());
 							builder.append(notif.getMessage().toString());
 							
-							ihm.textPaneMessage.setText(builder.toString());							
-							ihm.messagesPane.setViewportView(ihm.textPaneMessage);
+							
+							ihm.textPaneMessage.setText(builder.toString());	
+							//ihm.messagesPane.setViewportView(ihm.textPaneMessage);
+							ihm.mainFrame.remove(ihm.messagesPane);
+							JScrollPane messagesPane = new JScrollPane(ihm.textPaneMessage);
+							messagesPane.setVerticalScrollBarPolicy(
+									javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+							messagesPane.setBounds(50,170,750, 205);
+							ihm.messagesPane = messagesPane;
+							ihm.mainFrame.add(messagesPane);
 						}
 
 					}
