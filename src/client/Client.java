@@ -13,12 +13,16 @@ public class Client {
 	private ObjectInputStream in;
 	private User user;
 	private Topic currentTopic;
+	private  ServerHandler  serverHandler ;
 
 	public Client(){
 		try {
 			this.socket= new Socket((String) null, 3000);
 			this.out = new ObjectOutputStream(socket.getOutputStream());
 			this.in = new ObjectInputStream(socket.getInputStream());
+			this.serverHandler = new  ServerHandler(this);
+			Thread threadRH = new Thread(this.serverHandler );
+			threadRH.start();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -28,12 +32,8 @@ public class Client {
 
 	public  boolean  authenticate(String login, String password) throws ResponseException{
 		try {
-			AuthentificationRequest req = new AuthentificationRequest(login,password);
-			this.out.writeObject(req);
-			this.out.flush();
 
-			Response rep=this.readResponse();
-			//System.out.println("identification");
+			Response rep = this.readResponse(new AuthentificationRequest(login,password));
 
 			// si l'authentification est bonne on retourne true sinon false
 			if (rep.getClass().getSimpleName().equals("AuthentificationResponse")) {
@@ -52,7 +52,7 @@ public class Client {
 			}
 			else throw new ResponseException();
 
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
@@ -61,11 +61,8 @@ public class Client {
 
 	public  boolean createAccount(String login, String password) throws ResponseException{
 		try {
-			AccountCreationRequest req = new AccountCreationRequest(login,password);
-			this.out.writeObject(req);
-			this.out.flush();
-			// on attend que le serveur retourne la confirmation de la creation du compte
-			Response rep=this.readResponse();
+			Response rep = this.readResponse(new AccountCreationRequest(login,password));
+
 			if (rep.getClass().getSimpleName().equals("AccountCreationResponse")) {
 				if (((AccountCreationResponse)rep).isCreated()) {
 					System.out.println("Compte créé. Vous pouvez vous connecter maintenant :)");
@@ -80,7 +77,7 @@ public class Client {
 			else throw new ResponseException();
 
 
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
@@ -91,13 +88,9 @@ public class Client {
 
 	public  ArrayList<Topic>  loadForum() throws ResponseException{
 
-		LoadForumRequest req = new LoadForumRequest();
-
 		try {
 
-			this.out.writeObject(req);
-			this.out.flush();
-			Response rep=this.readResponse();
+			Response rep=this.readResponse(new LoadForumRequest());
 
 			if (rep.getClass().getSimpleName().equals("LoadForumResponse")) {
 				ArrayList<Topic> listTopic=((LoadForumResponse) rep).topicList ;
@@ -108,8 +101,11 @@ public class Client {
 				else System.out.println("Forum vide");
 				return listTopic;
 			}
-			else throw new ResponseException();
-		} catch (IOException | ClassNotFoundException e) {
+			else {
+				System.out.println(rep.getClass().getSimpleName());
+				throw new ResponseException();
+			}
+		} catch (IOException | ClassNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
@@ -119,10 +115,8 @@ public class Client {
 	public  Topic  newTopic( String Title, String content) throws ResponseException{
 		try {
 			Topic newTopic = new Topic(this.user, Title, content);
-			NewTopicRequest req = new NewTopicRequest(newTopic);
-			this.out.writeObject(req);
-			this.out.flush();
-			Response rep=this.readResponse();
+			Response rep = this.readResponse( new NewTopicRequest(newTopic));
+
 			if (rep.getClass().getSimpleName().equals("NewTopicResponse")) {
 				Topic newTopicCreated=((NewTopicResponse) rep).getTopic() ;
 				if ( !newTopicCreated.equals(newTopic)) System.out.println(newTopicCreated.toString());
@@ -135,7 +129,7 @@ public class Client {
 			}
 			else throw new ResponseException();
 
-		}catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
@@ -146,18 +140,15 @@ public class Client {
 
 	public  boolean deleteTopic(String topicTitle) throws ResponseException{
 		try {
-			DeleteTopicRequest req = new DeleteTopicRequest(this.user, "topicTitle");
-			this.out.writeObject(req);
-			this.out.flush();
+			Response rep = this.readResponse(new DeleteTopicRequest(this.user, "topicTitle"));
 
-			Response rep=this.readResponse();
 			if (rep.getClass().getSimpleName().equals("DeleteTopicResponse")) {
 				if (((DeleteTopicResponse)rep).isDelete) return true; 
 				else return false ; 			
 			}
 			else return false;
 
-		}catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
@@ -168,13 +159,9 @@ public class Client {
 
 	public  Topic  loadTopic(int index) throws ResponseException{
 
-		LoadTopicRequest req = new LoadTopicRequest(index);
 
 		try {
-
-			this.out.writeObject(req);
-			this.out.flush();
-			Response rep=this.readResponse();
+			Response rep = this.readResponse(new LoadTopicRequest(index));
 
 			if (rep.getClass().getSimpleName().equals("LoadTopicResponse")) {
 				this.currentTopic=((LoadTopicResponse) rep).getTopic() ;	
@@ -184,7 +171,7 @@ public class Client {
 			else System.out.println("Topic vide");
 			return null;
 
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
@@ -198,16 +185,7 @@ public class Client {
 			this.out.writeObject(req);
 			this.out.flush();
 			return newMessage;
-			/*Response rep=this.readResponse();
 
-			if (rep.getClass().getSimpleName().equals("NewMessageResponse")) {
-				// On refresh la page 
-				//this.loadTopic(currentTopic.getTitle());
-
-				return newMessage;
-			}	
-			else throw new ResponseException();
-			*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -216,23 +194,33 @@ public class Client {
 
 	}
 
-
-	public synchronized  Response readResponse() throws ClassNotFoundException, IOException {
-		/*
-		 * TODO
-		 * Here you should read the server response from the input stream, then print it.
-		 * Note: the server only answers with String ;)
-		 */
-		return (Response) in.readObject() ;
-
+	public Response readResponse(Request req) throws ClassNotFoundException, IOException, InterruptedException {
+		synchronized(this.in) {
+			//send the req immediatelly
+			this.out.writeObject(req);    
+			this.out.flush();  
+			//wait for response
+			in.wait(); 
+			System.out.println("on fini d'attendre");
+		}      
+		return this.serverHandler.getResponse();
 	}
-	
+
 	public ObjectInputStream getOIS() {
 		return this.in;
 	}
-	
+
 
 	public Socket getSocket() {
 		return this.socket;
 	}
+
+	public  ServerHandler getServerHandler() {
+		return  serverHandler;
+	}
+
+	
+
+
+
 }

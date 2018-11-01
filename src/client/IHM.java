@@ -34,7 +34,7 @@ public class IHM {
 	public  JFrame mainFrame;
 	public JTextPane textPaneMessage;
 	public JScrollPane messagesPane ;
-	
+
 	public IHM(JFrame frame){
 		this.mainFrame=frame;
 	}
@@ -47,16 +47,16 @@ public class IHM {
 		ihm.mainFrame.setSize(850,650); // on set la size du frame
 		ihm.mainFrame.setLocationRelativeTo(null) ; // on centre le frame
 
-		// en tête avec risitas
+		// en tête avec le logo
 		JLabel labelHead =new JLabel("Chat Java"); 
 		labelHead.setForeground(Color.BLUE);
 		labelHead.setBounds(240,50,250, 40);  
 		labelHead.setFont(new Font("Serif", Font.PLAIN, 50));
 		labelHead.setHorizontalAlignment(JLabel.CENTER);
 
-		ImageIcon icone = new ImageIcon("risi.gif");
-		JLabel risiLabel =new JLabel(icone);
-		risiLabel.setBounds(510, 10, 100, 100);
+		ImageIcon icone = new ImageIcon("logo.gif");
+		JLabel iconLabel =new JLabel(icone);
+		iconLabel.setBounds(510, 10, 100, 100);
 
 		//enter login 
 		JLabel labelLogin = new JLabel();		
@@ -90,7 +90,7 @@ public class IHM {
 
 		//add to frame
 		ihm.mainFrame.add(labelHead);
-		//mainFrame.add(risiLabel);
+		ihm.mainFrame.add(iconLabel);
 		ihm.mainFrame.add(labelLogin);
 		ihm.mainFrame.add(textfieldLog);
 		ihm.mainFrame.add(labelPass);
@@ -115,7 +115,7 @@ public class IHM {
 					if(client.createAccount(textfieldLog.getText(), textfieldPass.getText())) {
 						labelMsg.setText("Compte créé. Vous pouvez vous connecter maintenant :)");
 						labelMsg.setForeground(Color.BLUE);
-						
+
 					}
 					else {
 						labelMsg.setText("Ce login est déjà utilisé :(");
@@ -157,7 +157,7 @@ public class IHM {
 		ihm.mainFrame.getContentPane().removeAll();
 		ihm.mainFrame.repaint();
 
-		int page = 1;
+		//int page = 1;
 		ArrayList<Topic> topicList = client.loadForum();
 
 		JLabel labelHead =new JLabel("Liste des topics"); 
@@ -174,10 +174,6 @@ public class IHM {
 
 		// scrollbar
 		JScrollPane scrollPane = new JScrollPane();
-		//scrollPane.setLayoutOrientation(JList.VERTICAL);
-		//scrollPane.setBounds(50,55,750, 500);
-		//scrollPane.setViewportView(topicJList);
-		//scrollPane.add(topicJList);
 
 		//Créer compte bouton
 		JButton bnew=new JButton("Nouveau topic");    
@@ -215,6 +211,7 @@ public class IHM {
 					if (index >= 0) {
 						//Object o = theList.getModel().getElementAt(index);
 						try {
+							client.loadForum();
 							topicFrame( ihm, client, client.loadTopic(theList.getSelectedIndex()));
 						} catch (ResponseException e) {
 							// TODO Auto-generated catch block
@@ -338,7 +335,7 @@ public class IHM {
 		messagesPane.setVerticalScrollBarPolicy(
 				javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		messagesPane.setBounds(50,170,largeur, 205);
-		
+
 		ihm.textPaneMessage = textPaneMessage;
 		ihm.messagesPane =  messagesPane;
 
@@ -374,7 +371,16 @@ public class IHM {
 		ihm.mainFrame.setLayout(null);    
 		ihm.mainFrame.setVisible(true);  
 
+		// On lance le thread pour refresh les nouveau messages envoyés
+	//	RefreshTopic RT = new RefreshTopic( client.getOIS(), client, ihm,  topic);
+	//	Thread t1 = new Thread(RT );
+	//	t1.start();
 		//action listener
+		
+		// On rajoute ihm et topic
+		client.getServerHandler().setIhm(ihm);
+		client.getServerHandler().setTopic(topic);
+		
 		bok.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -394,18 +400,18 @@ public class IHM {
 		bre.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try { topicMenu( ihm, client) ;
+			
+						try {
+							client.getServerHandler().setTopic(null);
+							topicMenu( ihm, client) ;
+						} catch (ResponseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
-				} catch (ResponseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}				
 			}          
 		});	
 
-		// On lance le thread pour refresh les nouveau messages envoyés
-		RefreshTopic RT = new RefreshTopic( client.getOIS(), client, ihm,  topic);
-		Thread t1 = new Thread(RT );
-		t1.start();
+
 	}
 }

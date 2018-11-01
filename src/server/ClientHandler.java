@@ -50,7 +50,6 @@ public class ClientHandler implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 
-		int nb_tour = 0;
 		try {		
 
 			out = new ObjectOutputStream(this.client.getOutputStream());
@@ -198,23 +197,24 @@ public class ClientHandler implements Runnable {
 							forumDatabase.saveTopics(topicList);
 							System.out.println("topic maj");
 
-							out.writeObject(new NewMessageResponse());
-							this.out.flush();
+						//	out.writeObject(new NewMessageResponse());
+						//	this.out.flush();
 
-							// On Informe les autres
+							// Envoie de la notification du message
 
 							listClientHandler.forEach(x->{
 								try {
 									//nmreq.getTopic().addMessage(nmreq.getMessage());
 									
 									x.out.writeObject(new Notification(nmreq.getTopic(), nmreq.getMessage()) );
-
-
+									this.out.flush();
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							});
+							//this.out.flush();
+
 
 						}
 

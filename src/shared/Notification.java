@@ -2,7 +2,7 @@ package shared;
 
 import java.io.Serializable;
 
-public class Notification extends Response {
+public class Notification implements Serializable{
 
 	private Topic topic;
 	private Message message;
