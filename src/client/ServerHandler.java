@@ -56,23 +56,19 @@ public class  ServerHandler implements Runnable  {
 							if (notif.getTopic().getAuthor().equals(this.topic.getAuthor())){
 								System.out.println("on refresh");
 								builder = new StringBuilder();
-								builder.append(ihm.textPaneMessage.getText());
+								System.out.println(ihm.textPaneMessage.getText());
+								if (!(ihm.textPaneMessage.getText()=="")) builder.append(ihm.textPaneMessage.getText());
 								builder.append(notif.getMessage().toString());
 								ihm.textPaneMessage.setText(builder.toString());	
-								//ihm.messagesPane.setViewportView(ihm.textPaneMessage);
-								ihm.mainFrame.remove(ihm.messagesPane);
-								JScrollPane messagesPane = new JScrollPane(ihm.textPaneMessage);
-								messagesPane.setVerticalScrollBarPolicy(
-								javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-								messagesPane.setBounds(50,170,750, 205);
-								ihm.messagesPane = messagesPane;
-								ihm.mainFrame.add(messagesPane);
+								System.out.println(ihm.textPaneMessage.getText().length());
+								if ((ihm.textPaneMessage.getText()==""))ihm.messagesPane.setViewportView(ihm.textPaneMessage);
+								ihm.messagesPane.repaint();
 							}
 						}
 					}
 
 				}
-				else {
+				else { // on recoit une reponse à une requete envoyée
 					this.setResponse((Response) ios);
 					synchronized(this.in){
 						System.out.println("thread attend wait");

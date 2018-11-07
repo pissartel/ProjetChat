@@ -62,6 +62,11 @@ public class ClientHandler implements Runnable {
 
 				Request request;
 				request=(Request) in.readObject();
+				
+				
+				// MAJ listes client et topics
+				userList = userDatabase.loadData();
+				topicList = forumDatabase.loadTopics();
 
 				//System.out.println(nb_tour);
 
@@ -182,6 +187,8 @@ public class ClientHandler implements Runnable {
 							NewMessageRequest nmreq = (NewMessageRequest) request;	
 							System.out.println("msg ");
 
+							
+							
 							System.out.println(nmreq.getTopic().toStringMessages());
 
 							//int index=topicList.stream().filter(x-> x.getTitle().contains(nmreq.topic.getTitle()))

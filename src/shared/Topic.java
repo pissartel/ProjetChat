@@ -19,8 +19,8 @@ public class Topic extends Message{
 	}
 
 
-	public String getNumberOfMessages() {
-		return this.author;  
+	public int getNumberOfMessages() {
+		return this.messages.size();  
 	}
 
 
