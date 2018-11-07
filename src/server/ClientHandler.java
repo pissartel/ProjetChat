@@ -176,14 +176,26 @@ public class ClientHandler implements Runnable {
 								System.out.println("topic inexistant");
 							}
 						}
+						
+					case "LoadMembersRequest":
+						if (islogged){
+							LoadMembersRequest ltreq = (LoadMembersRequest) request;
+							List<String> MembersList = userList.stream().map(x -> x.getLogin())
+									.collect(Collectors.toList());
+							out.writeObject(new LoadMembersResponse((ArrayList)MembersList));
+							this.out.flush();
+						}
 
 					case "NewMessageRequest":
 						if (islogged){
 							NewMessageRequest nmreq = (NewMessageRequest) request;	
 							System.out.println("msg ");
 
+							//maj des topics
+							topicList=forumDatabase.loadTopics();
+							
 							System.out.println(nmreq.getTopic().toStringMessages());
-
+							
 							//int index=topicList.stream().filter(x-> x.getTitle().contains(nmreq.topic.getTitle()))
 							topicList.set(topicList.stream().map(x -> x.getTitle())
 									.collect(Collectors.toList()).indexOf(nmreq.getTopic().getTitle()), 
@@ -206,7 +218,7 @@ public class ClientHandler implements Runnable {
 								try {
 									//nmreq.getTopic().addMessage(nmreq.getMessage());
 									
-									x.out.writeObject(new Notification(nmreq.getTopic(), nmreq.getMessage()) );
+									x.out.writeObject(new NotificationPublicMessage(nmreq.getTopic(), nmreq.getMessage()) );
 									this.out.flush();
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
@@ -216,6 +228,23 @@ public class ClientHandler implements Runnable {
 							//this.out.flush();
 
 
+						}
+						
+					case "NewPrivateMessageRequest":
+						if (islogged){
+							NewPrivateMessageRequest npmreq = (NewPrivateMessageRequest) request;	
+
+							listClientHandler.forEach(x->{
+								try {
+									//nmreq.getTopic().addMessage(nmreq.getMessage());
+									
+									x.out.writeObject(new NotificationPrivateMessage(npmreq.getMessage(), npmreq.getRecipient()) );
+									this.out.flush();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							});
 						}
 
 						//e.printStackTrace();
@@ -248,12 +277,12 @@ public class ClientHandler implements Runnable {
 	}
 
 
-	public ArrayList<Thread> getOtherCLient() {
+	public ArrayList<Thread> getlistClientHandler() {
 		return otherCLient;
 	}
 
 
-	public void setOtherClient(ArrayList<ClientHandler> listClientHandler) {
+	public void setlistClientHandler(ArrayList<ClientHandler> listClientHandler) {
 		this.listClientHandler = listClientHandler;
 	}
 

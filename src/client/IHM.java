@@ -1,15 +1,21 @@
 package client;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.BoxLayout;
@@ -26,18 +32,34 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
+import shared.Message;
 import shared.Topic;
 
 public class IHM {
 	public  JFrame mainFrame;
 	public JTextPane textPaneMessage;
 	public JScrollPane messagesPane ;
+	public String msgIcon;
+	public JButton bMessagerie;
+	public Map<String, String> messagerie ;
+	public boolean isMessagerieFrame;
+	public JFrame privateMessageFrame;
+	public JList<String> memberJList;
+	public JTextPane textPanePrivateMessage;
+	public JScrollPane privatemessagesPane;
+	
+
 
 	public IHM(JFrame frame){
 		this.mainFrame=frame;
+		this.msgIcon="message.gif";
+		this.messagerie=new HashMap<String, String>();
+		this.isMessagerieFrame = false;
 	}
+
 
 	public static void main(String argv[]) {
 
@@ -104,6 +126,7 @@ public class IHM {
 
 		// Création du client
 		Client client = new Client();
+		client.getServerHandler().setIhm(ihm);
 
 
 		// Fonctions exécutées lors de l'appui
@@ -179,11 +202,16 @@ public class IHM {
 		JButton bnew=new JButton("Nouveau topic");    
 		bnew.setBounds(50,555,140, 40);
 
+		JButton bmsg = new JButton(new ImageIcon(ihm.msgIcon));    
+		bmsg.setBounds(750,10,45, 40);
+		ihm.bMessagerie= bmsg;
+
 		//add to frame
 		ihm.mainFrame.add(labelHead);
 		ihm.mainFrame.add(topicJList);
 		//ihm.mainFrame.add(scrollPane);
 		ihm.mainFrame.add(bnew);
+		ihm.mainFrame.add(bmsg);
 		//labelList.forEach(x->ihm.mainFrame.add(x));
 		ihm.mainFrame.setLayout(null);    
 
@@ -202,6 +230,19 @@ public class IHM {
 			}          
 		});
 
+		// Fonction exécutée pour l'ouverture de la messagerie privée
+		bmsg.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					PrivateMessageFrame(ihm, client);
+				} catch (ResponseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		// Fonction exécutée pour l'ouverture d'un topic
 		topicJList.addMouseListener( new MouseAdapter() {
 			public void mouseClicked(MouseEvent mouseEvent) {
@@ -221,6 +262,7 @@ public class IHM {
 				}
 			}
 		});
+
 	}
 
 	public static void newTopic(IHM ihm , Client client) throws ResponseException {
@@ -260,8 +302,6 @@ public class IHM {
 		JLabel labelErr = new JLabel();
 		labelErr.setBounds(50,250,140, 40); 
 		labelErr.setForeground(Color.RED);
-
-
 
 		//add to frame
 		newTopicFrame.add(labelTitle);
@@ -356,8 +396,15 @@ public class IHM {
 
 		JButton bok=new JButton("Envoyer");    
 		bok.setBounds(655,580,140, 40);
-		JButton bre=new JButton("Retour");    
-		bre.setBounds(655,10,140, 40);
+		//JButton bre=new JButton("Retour");    
+		//bre.setBounds(655,10,140, 40);
+
+		JButton bre=new JButton(new ImageIcon("return-icon.gif"));    
+		bre.setBounds(700,10,45, 40);
+
+		JButton bmsg = new JButton(new ImageIcon(ihm.msgIcon));    
+		bmsg.setBounds(750,10,45, 40);
+
 
 		ihm.mainFrame.add(labelHead);
 		//ihm.mainFrame.add(labelContentHead);
@@ -366,21 +413,21 @@ public class IHM {
 		ihm.mainFrame.add(scrollPane);
 		ihm.mainFrame.add(bok);
 		ihm.mainFrame.add(bre);
-		ihm.mainFrame.add(labelMsg);
-
+		ihm.mainFrame.add(bre);
+		ihm.mainFrame.add(bmsg);
 		ihm.mainFrame.setLayout(null);    
 		ihm.mainFrame.setVisible(true);  
 
 		// On lance le thread pour refresh les nouveau messages envoyés
-	//	RefreshTopic RT = new RefreshTopic( client.getOIS(), client, ihm,  topic);
-	//	Thread t1 = new Thread(RT );
-	//	t1.start();
+		//	RefreshTopic RT = new RefreshTopic( client.getOIS(), client, ihm,  topic);
+		//	Thread t1 = new Thread(RT );
+		//	t1.start();
 		//action listener
-		
-		// On rajoute ihm et topic
-		client.getServerHandler().setIhm(ihm);
+
+		// On rajoute topic
+	//	client.getServerHandler().setIhm(ihm);
 		client.getServerHandler().setTopic(topic);
-		
+
 		bok.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -400,18 +447,186 @@ public class IHM {
 		bre.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-			
-						try {
-							client.getServerHandler().setTopic(null);
-							topicMenu( ihm, client) ;
-						} catch (ResponseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+
+				try {
+					client.getServerHandler().setTopic(null);
+					topicMenu( ihm, client) ;
+				} catch (ResponseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}          
 		});	
 
 
 	}
+
+	public static void PrivateMessageFrame(IHM ihm, Client client) throws ResponseException {
+		
+		// MAJ de l'icone
+		if (ihm.msgIcon== "new_message.gif") {
+			ihm.msgIcon="message.gif";
+			JButton bmsg = new JButton(new ImageIcon(ihm.msgIcon));    
+			bmsg.setBounds(750,10,45, 40);
+			ihm.bMessagerie= bmsg;
+			ihm.bMessagerie= bmsg;
+			ihm.mainFrame.add(bmsg);
+			
+			bmsg.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						IHM.PrivateMessageFrame(ihm, client);
+					} catch (ResponseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+
+		ihm.isMessagerieFrame=true;
+		
+		JFrame privateMessageFrame = new JFrame("Messagerie Privée");
+		privateMessageFrame.setSize(600,400); // on set la size du frame
+		privateMessageFrame.setLocationRelativeTo(null) ; // on centre le frame
+
+		DefaultListModel<String> listModel = new DefaultListModel<>();
+		ArrayList<String> memberList = client.loadMembers();
+
+		memberList.forEach(x-> listModel.addElement(x));
+		//JList topicJList = new JList<>(listModel);
+
+		JList<String> memberJList = new JList<String>(listModel);
+		memberJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		memberJList.setFont(new Font("Arial", Font.PLAIN, 15));
+
+		JScrollPane scrollPane = new JScrollPane(memberJList);
+		scrollPane.setViewportView(memberJList);
+		memberJList.setLayoutOrientation(JList.VERTICAL);
+
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBounds(10,10,100, 360);  
+		panel.add(scrollPane);
+
+
+		// affichage des messages 
+		//JLabel labelMessages =new JLabel(topic.toStringMessages()); 
+		JTextPane textPaneMessage = new JTextPane();
+		textPaneMessage.setEditable(false);
+
+
+		JScrollPane messagesPane = new JScrollPane(textPaneMessage);
+		messagesPane.setVerticalScrollBarPolicy(
+				javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		messagesPane.setBounds(125,10,460, 200);
+
+
+		// zone de texte pour message
+		JTextArea textAreadMsg= new JTextArea();
+		//textAreadMsg.setBounds(125, 300, 460, 150);
+
+		// scroll bar
+		JScrollPane textAreaPane = new JScrollPane();
+		textAreaPane.setViewportView(textAreadMsg);
+		textAreaPane.setBounds(125, 220, 460, 100);
+
+		// bouton envoyer message
+		JButton bok=new JButton("Envoyer");    
+		bok.setBounds(440,330,140, 40);
+
+		//	scrollPane.setViewportView(topicJList);
+
+		privateMessageFrame.add(panel);
+		privateMessageFrame.add(bok);
+		privateMessageFrame.add(textAreaPane);
+		//privateMessageFrame.add(scrollPane);
+		privateMessageFrame.add(messagesPane);
+
+		privateMessageFrame.setLayout(null);    
+		privateMessageFrame.setVisible(true);
+
+		//MAJ messages 
+		StringBuilder builder = new StringBuilder();
+
+		client.getPrivateMessages().forEach(x->{
+			if(!(ihm.messagerie.get(x.getAuthor())==null)) {
+				builder.append(ihm.messagerie.get(x.getAuthor()));
+			}
+			builder.append(x.toString());
+			ihm.messagerie.put(x.getAuthor(), builder.toString());
+
+		});
+		
+		System.out.println(ihm.messagerie.toString());
+		// remise à 0 des nouveau msg
+		client.setPrivateMessages(new ArrayList<Message>());
+
+		// Fonction exécutée pour l'ouverture d'une messagerie
+		memberJList.addMouseListener( new MouseAdapter() {
+			public void mouseClicked(MouseEvent mouseEvent) {
+				//JList theList = (JList) mouseEvent.getSource();
+				
+					int index = memberJList.getSelectedIndex();
+					if (index >= 0) {
+
+						if(!(ihm.messagerie.get(memberList.get(index)) ==null)) {
+						textPaneMessage.setText(ihm.messagerie.get(memberList.get(index)));
+						}
+						else textPaneMessage.setText("");
+	
+						//ihm.messagesPane.setViewportView(ihm.textPaneMessage);
+						privateMessageFrame.remove(messagesPane);
+						JScrollPane messagesPane = new JScrollPane(textPaneMessage);
+						messagesPane.setVerticalScrollBarPolicy(
+								javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+						messagesPane.setBounds(125,10,460, 180);
+						privateMessageFrame.add(messagesPane);
+
+					}
+				
+			}
+		});
+		bok.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					Message msg = client.sendPrivateMessage(textAreadMsg.getText(), memberList.get(memberJList.getSelectedIndex()));
+					StringBuilder builder = new StringBuilder();
+					if(!(ihm.messagerie.get(memberList.get(memberJList.getSelectedIndex()))==null)) {
+						builder.append(ihm.messagerie.get(memberList.get(memberJList.getSelectedIndex())));
+					}
+					builder.append(msg.toString());
+					textPaneMessage.setText(builder.toString());
+					
+				} catch (ResponseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				textAreadMsg.setText("");
+
+				
+
+			}          
+		});
+		
+		privateMessageFrame.addWindowListener(new WindowAdapter()
+		{
+		    public void windowClosing(WindowEvent e)
+		    {
+		        ihm.isMessagerieFrame=false;
+		    }
+		});
+		// on met a jour e champs
+		ihm.privateMessageFrame=privateMessageFrame;
+		ihm.memberJList=memberJList;
+		ihm.textPanePrivateMessage=textPaneMessage;
+		ihm.privatemessagesPane=messagesPane;
+	}
+	
+	
 }
+

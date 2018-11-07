@@ -3,6 +3,7 @@ package client;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 import server.User;
 import shared.*;
@@ -14,6 +15,7 @@ public class Client {
 	private User user;
 	private Topic currentTopic;
 	private  ServerHandler  serverHandler ;
+	private ArrayList<Message> privateMessages;
 
 	public Client(){
 		try {
@@ -21,6 +23,7 @@ public class Client {
 			this.out = new ObjectOutputStream(socket.getOutputStream());
 			this.in = new ObjectInputStream(socket.getInputStream());
 			this.serverHandler = new  ServerHandler(this);
+			this.privateMessages = new ArrayList<Message>();
 			Thread threadRH = new Thread(this.serverHandler );
 			threadRH.start();
 
@@ -58,6 +61,8 @@ public class Client {
 			return false;
 		}
 	}
+
+
 
 	public  boolean createAccount(String login, String password) throws ResponseException{
 		try {
@@ -156,7 +161,22 @@ public class Client {
 
 	}
 
-
+	public  ArrayList<String>  loadMembers() throws ResponseException{
+		try {
+			Response rep = this.readResponse(new LoadMembersRequest());
+			if (rep.getClass().getSimpleName().equals("LoadMembersResponse")) {
+				return (ArrayList<String>) ((LoadMembersResponse) rep).getMemberList(); 
+			}
+			else return null;
+		} catch (ClassNotFoundException | IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	
 	public  Topic  loadTopic(int index) throws ResponseException{
 
 
@@ -193,6 +213,22 @@ public class Client {
 		}
 
 	}
+	
+	public Message sendPrivateMessage(String Content, String recipient ) throws ResponseException{
+		Message newMessage = new Message(this.user, Content);
+		NewPrivateMessageRequest req = new NewPrivateMessageRequest(newMessage, recipient);
+		try {
+			this.out.writeObject(req);
+			this.out.flush();
+			return newMessage;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+
 
 	public Response readResponse(Request req) throws ClassNotFoundException, IOException, InterruptedException {
 		synchronized(this.in) {
@@ -219,7 +255,21 @@ public class Client {
 		return  serverHandler;
 	}
 
-	
+	public ArrayList<Message> getPrivateMessages() {
+		return privateMessages;
+	}
+
+	public void setPrivateMessages(ArrayList<Message> privateMessages) {
+		this.privateMessages = privateMessages;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 
 

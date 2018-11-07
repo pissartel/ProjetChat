@@ -40,7 +40,7 @@ public class Server implements Runnable {
 				// On l'ajoute à la liste des ClientHandler
 				ClientList.add(ch);
 				// MAJ dans chaque clienthandlers
-				ClientList.forEach(x->x.setOtherClient(ClientList));
+				ClientList.forEach(x->x.setlistClientHandler(ClientList));
 				// On lance le thread
 				t1 = new Thread(ch);
 				

@@ -3,21 +3,10 @@ package shared;
 import java.io.Serializable;
 
 public class Notification implements Serializable{
-
-	private Topic topic;
 	private Message message;
-
-	public Notification(Topic topic, Message message) {
-		this.setTopic(topic);
-		this.setMessage(message);
-	}
-
-	public Topic getTopic() {
-		return topic;
-	}
-
-	public void setTopic(Topic topic) {
-		this.topic = topic;
+	
+	public Notification(Message message) {
+		this.message = message;
 	}
 
 	public Message getMessage() {
@@ -27,7 +16,6 @@ public class Notification implements Serializable{
 	public void setMessage(Message message) {
 		this.message = message;
 	}
-
 
 
 }
