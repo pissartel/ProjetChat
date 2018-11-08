@@ -1,6 +1,7 @@
 package shared;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import server.User;
@@ -8,14 +9,16 @@ import server.User;
 public class Message implements Serializable{
 	private String author;
 	private String content;
-	public Date date;
+	public String date;
 
 
 	
 	public Message(User author, String content) {
 		this.author= author.getLogin();
 		this.setContent(content);
-		this.date=new Date();
+		//this.date=new Date();
+		SimpleDateFormat formater = new SimpleDateFormat("'le' dd/MM/yyyy 'à' hh:mm:ss");
+		this.date= formater.format(new Date());
 	}
 	
 	public String getAuthor() {
@@ -31,7 +34,7 @@ public class Message implements Serializable{
 	}
 	
 	public String toString() {
-		return this.getAuthor() + " : \n"  + this.getContent()+ "\n" 
+		return this.getAuthor() + " a écrit le " + this.date +  " : \n"  + this.getContent()+ "\n" 
 	+ "----------------------------------"+ "\n" ;
 	}
 	

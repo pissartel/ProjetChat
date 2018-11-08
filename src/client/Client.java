@@ -86,7 +86,7 @@ public class Client {
 
 
 
-	public  ArrayList<Topic>  loadForum() throws ResponseException{
+	public   ArrayList<Topic>  loadForum() throws ResponseException{
 
 		try {
 
@@ -112,7 +112,7 @@ public class Client {
 		}
 	}
 
-	public  Topic  newTopic( String Title, String content) throws ResponseException{
+	public   Topic  newTopic( String Title, String content) throws ResponseException{
 		try {
 			Topic newTopic = new Topic(this.user, Title, content);
 			Response rep = this.readResponse( new NewTopicRequest(newTopic));
@@ -193,6 +193,17 @@ public class Client {
 		}
 
 	}
+	
+	public void closeClient() {
+		try {
+			this.out.writeObject(new CloseRequest());
+			this.out.flush();  
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}    
+	}
+
 
 	public Response readResponse(Request req) throws ClassNotFoundException, IOException, InterruptedException {
 		synchronized(this.in) {
@@ -205,6 +216,7 @@ public class Client {
 		}      
 		return this.serverHandler.getResponse();
 	}
+	
 
 	public ObjectInputStream getOIS() {
 		return this.in;

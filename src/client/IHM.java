@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -31,7 +33,7 @@ import javax.swing.SwingConstants;
 import shared.Topic;
 
 public class IHM {
-	public  JFrame mainFrame;
+	public JFrame mainFrame;
 	public JTextPane textPaneMessage;
 	public JScrollPane messagesPane ;
 
@@ -148,6 +150,13 @@ public class IHM {
 					e.printStackTrace();
 				}
 			}          
+		});
+		
+		ihm.mainFrame.addWindowListener(new WindowAdapter() {
+		    public void WindowClosing(WindowEvent e) {
+		        client.closeClient();
+		        ihm.mainFrame.dispose();
+		    }
 		});
 
 	}
@@ -360,7 +369,6 @@ public class IHM {
 		bre.setBounds(655,10,140, 40);
 
 		ihm.mainFrame.add(labelHead);
-		//ihm.mainFrame.add(labelContentHead);
 		ihm.mainFrame.add(contentPane);
 		ihm.mainFrame.add(messagesPane);
 		ihm.mainFrame.add(scrollPane);
@@ -370,12 +378,6 @@ public class IHM {
 
 		ihm.mainFrame.setLayout(null);    
 		ihm.mainFrame.setVisible(true);  
-
-		// On lance le thread pour refresh les nouveau messages envoyés
-	//	RefreshTopic RT = new RefreshTopic( client.getOIS(), client, ihm,  topic);
-	//	Thread t1 = new Thread(RT );
-	//	t1.start();
-		//action listener
 		
 		// On rajoute ihm et topic
 		client.getServerHandler().setIhm(ihm);

@@ -21,9 +21,8 @@ public class ClientHandler implements Runnable {
 	private ObjectOutputStream out;
 	private UserDatabase userDatabase;
 	private ForumDatabase forumDatabase;
-	private ArrayList<ClientHandler> listClientHandler;
-	private ArrayList<Thread> otherCLient;
 	private User userClient;
+	private Server server;
 
 	public static final String UDB_FILE_NAME ="userdatabase.db";	
 	public static final String FDB_FILE_NAME ="forumdatabase.db";	
@@ -32,18 +31,13 @@ public class ClientHandler implements Runnable {
 	public boolean islogged = false;
 
 	//public ArrayList<Topic> forum;
-	public ClientHandler(Socket client) {
+	public ClientHandler(Socket client, Server server) {
 		this.client = client;
 		this.userDatabase=new UserDatabase(UDB_FILE_NAME);
 		this.forumDatabase=new ForumDatabase(FDB_FILE_NAME);
+		this.server=server;
 	}
 	
-	public ClientHandler(Socket client, ArrayList<ClientHandler> listClientHandler) {
-		this.client = client;
-		this.userDatabase=new UserDatabase(UDB_FILE_NAME);
-		this.forumDatabase=new ForumDatabase(FDB_FILE_NAME);
-		this.listClientHandler=listClientHandler;
-	}
 
 
 	@Override
@@ -99,7 +93,7 @@ public class ClientHandler implements Runnable {
 						else out.writeObject(new AuthentificationResponse(user, false));
 						this.out.flush();
 						System.out.println("authentification " + islogged);
-
+						break ;
 
 
 					case "AccountCreationRequest":
@@ -123,14 +117,15 @@ public class ClientHandler implements Runnable {
 							this.out.flush();
 						}
 						System.out.println("connexion " + isconnected);
-
+						break ;
+						
 					case "LoadForumRequest":
 						if (islogged){
 							LoadForumRequest lfreq = (LoadForumRequest) request;
 							out.writeObject(new LoadForumResponse(topicList));
 							this.out.flush();
 						}
-
+						break ;
 					case "NewTopicRequest":
 						NewTopicRequest ntreq = (NewTopicRequest) request;
 
@@ -150,6 +145,7 @@ public class ClientHandler implements Runnable {
 							else 	out.writeObject(new NewTopicResponseFailure());
 
 						}
+						break ;
 
 					case "DeleteTopicRequest":
 						DeleteTopicRequest dtreq = (DeleteTopicRequest) request;
@@ -169,6 +165,7 @@ public class ClientHandler implements Runnable {
 							//MAJ du forum
 							forumDatabase.saveTopics(topicList);
 						}
+						break ;
 					case "LoadTopicRequest":
 						if (islogged){
 							LoadTopicRequest ltreq = (LoadTopicRequest) request;
@@ -181,22 +178,18 @@ public class ClientHandler implements Runnable {
 								System.out.println("topic inexistant");
 							}
 						}
-
+						break ;
 					case "NewMessageRequest":
 						if (islogged){
 							NewMessageRequest nmreq = (NewMessageRequest) request;	
 							System.out.println("msg ");
-
-							
-							
 							System.out.println(nmreq.getTopic().toStringMessages());
 
-							//int index=topicList.stream().filter(x-> x.getTitle().contains(nmreq.topic.getTitle()))
+							
 							topicList.set(topicList.stream().map(x -> x.getTitle())
 									.collect(Collectors.toList()).indexOf(nmreq.getTopic().getTitle()), 
 									nmreq.getTopic().addMessage(nmreq.getMessage()));
-							System.out.println(nmreq.getTopic().toStringMessages());
-
+							//System.out.println(nmreq.getTopic().toStringMessages());
 							
 							System.out.println("msg sauvegardé");
 
@@ -204,27 +197,15 @@ public class ClientHandler implements Runnable {
 							forumDatabase.saveTopics(topicList);
 							System.out.println("topic maj");
 
-						//	out.writeObject(new NewMessageResponse());
-						//	this.out.flush();
-
 							// Envoie de la notification du message
-
-							listClientHandler.forEach(x->{
-								try {
-									//nmreq.getTopic().addMessage(nmreq.getMessage());
-									
-									x.out.writeObject(new Notification(nmreq.getTopic(), nmreq.getMessage()) );
-									this.out.flush();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							});
-							//this.out.flush();
-
-
+							this.server.sendNotification(nmreq); 
 						}
-
+						break ;
+						
+					case "CloseRequest":
+						this.server.remove(this);
+						this.isconnected = false;
+						break ;
 						//e.printStackTrace();
 					}
 				} catch (IOException e) {
@@ -255,13 +236,9 @@ public class ClientHandler implements Runnable {
 	}
 
 
-	public ArrayList<Thread> getOtherCLient() {
-		return otherCLient;
-	}
-
-
-	public void setOtherClient(ArrayList<ClientHandler> listClientHandler) {
-		this.listClientHandler = listClientHandler;
+	
+	public ObjectOutputStream getOut() {
+		return this.out;
 	}
 
 	
