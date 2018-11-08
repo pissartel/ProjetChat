@@ -21,14 +21,15 @@ public class test_Database {
 		
 		ArrayList<Topic> list_topic = new ArrayList<Topic>();
 
-		Topic topic1 = new Topic(user1, "Règles du chat", "Il n'y a pas de règles sur le chat.");
+		//Topic topic1 = new Topic(user1, "Règles du chat", "Il n'y a pas de règles sur le chat.");
 		//Topic topic2 = new Topic(user2, "Topic2", "Blabla2");
 		
 		//topic1.addMessage(new Message(user2, "coucou"));
-		System.out.println(topic1.toString());
+		//System.out.println(topic1.toString());
 		//list_topic.add(topic1);
 		//list_topic.add(topic2);
 	//	System.out.println(topic1.toString());
+		System.out.println("forumdatabase écrasée");
 
 		ForumDatabase forum = new ForumDatabase("forumdatabase.db");
 	//	forum.clearTopics();

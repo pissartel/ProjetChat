@@ -86,7 +86,7 @@ public class Client {
 
 
 
-	public   ArrayList<Topic>  loadForum() throws ResponseException{
+	public  synchronized ArrayList<Topic>  loadForum() throws ResponseException{
 
 		try {
 
@@ -157,7 +157,7 @@ public class Client {
 	}
 
 
-	public  Topic  loadTopic(int index) throws ResponseException{
+	public synchronized Topic  loadTopic(int index) throws ResponseException{
 
 
 		try {
@@ -180,25 +180,40 @@ public class Client {
 
 	public Message newMessage(String Content ) throws ResponseException{
 		Message newMessage = new Message(this.user, Content);
-		NewMessageRequest req = new NewMessageRequest(newMessage, currentTopic);
 		try {
-			this.out.writeObject(req);
-			this.out.flush();
-			return newMessage;
+			Response rep = readResponse(new NewMessageRequest(newMessage, currentTopic));
+			if (rep.getClass().getSimpleName().equals("NewMessageResponse")) {
+				if (((NewMessageResponse) rep).isSent()){
+					return newMessage;
+				}
+				else return null;
 
-		} catch (IOException e) {
+			}
+			else return null;
+
+		} catch (IOException | ClassNotFoundException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 
 	}
-	
+
 	public void closeClient() {
 		try {
-			this.out.writeObject(new CloseRequest());
-			this.out.flush();  
+
+			Response rep = readResponse(new CloseRequest());
+			this.out.close();
+			this.in.close();
+			socket.close();
+
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    
@@ -212,14 +227,16 @@ public class Client {
 			this.out.flush();  
 			//wait for response
 			in.wait(); 
-			System.out.println("on fini d'attendre");
 		}      
 		return this.serverHandler.getResponse();
 	}
-	
+
 
 	public ObjectInputStream getOIS() {
 		return this.in;
+	}
+	public ObjectOutputStream getOOS() {
+		return this.out;
 	}
 
 
@@ -231,7 +248,7 @@ public class Client {
 		return  serverHandler;
 	}
 
-	
+
 
 
 

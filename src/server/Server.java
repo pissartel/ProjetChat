@@ -37,15 +37,17 @@ public class Server implements Runnable {
 				System.out.println("En attente de accept...");
 				client = this.server.accept();
 				System.out.println("accepté");
-				
+
 				//On créer un nouveau CLientHandler
 				ClientHandler ch = new ClientHandler(client, this);
 				// On l'ajoute à la liste des ClientHandler
 				clientList.add(ch);
 				t1 = new Thread(ch);
-				
+
 				System.out.println("on démarre client handler");
 				t1.start();	
+
+				System.out.println(clientList);
 			}
 
 
@@ -57,10 +59,13 @@ public class Server implements Runnable {
 	}
 	public void remove(ClientHandler clientHandler){
 		this.clientList.remove(clientHandler);
+
 	}
-	
+
 	public void sendNotification(NewMessageRequest nmreq) {
 		//Envoie d'une notificaiton du'nnnouveau message à tout les clients connectés
+		System.out.println(this.clientList);
+
 		this.clientList.forEach(x->{
 			try {				
 				x.getOut().writeObject(new Notification(nmreq.getTopic(), nmreq.getMessage()) );

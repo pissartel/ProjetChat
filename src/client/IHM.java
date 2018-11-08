@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -102,7 +103,7 @@ public class IHM {
 		ihm.mainFrame.add(labelMsg);
 		ihm.mainFrame.setLayout(null);    
 		ihm.mainFrame.setVisible(true);    
-		ihm.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//ihm.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création du client
 		Client client = new Client();
@@ -154,8 +155,9 @@ public class IHM {
 		
 		ihm.mainFrame.addWindowListener(new WindowAdapter() {
 		    public void WindowClosing(WindowEvent e) {
-		        client.closeClient();
-		        ihm.mainFrame.dispose();
+		    	client.closeClient();
+		    	
+		      //  ihm.mainFrame.dispose();
 		    }
 		});
 
@@ -166,7 +168,6 @@ public class IHM {
 		ihm.mainFrame.getContentPane().removeAll();
 		ihm.mainFrame.repaint();
 
-		//int page = 1;
 		ArrayList<Topic> topicList = client.loadForum();
 
 		JLabel labelHead =new JLabel("Liste des topics"); 
@@ -191,9 +192,7 @@ public class IHM {
 		//add to frame
 		ihm.mainFrame.add(labelHead);
 		ihm.mainFrame.add(topicJList);
-		//ihm.mainFrame.add(scrollPane);
 		ihm.mainFrame.add(bnew);
-		//labelList.forEach(x->ihm.mainFrame.add(x));
 		ihm.mainFrame.setLayout(null);    
 
 		// Fonction exécutée pour création de topic
@@ -262,8 +261,6 @@ public class IHM {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(textAreadMsg);
 		scrollPane.setBounds(125, 50, 350, 150);
-		//textAreadMsg.add(zoneScrolable,BorderLayout.CENTER);
-		//      setVisible(true);
 
 		// Label d'erreur
 		JLabel labelErr = new JLabel();
@@ -275,9 +272,7 @@ public class IHM {
 		//add to frame
 		newTopicFrame.add(labelTitle);
 		newTopicFrame.add(textfieldTitle);
-
 		newTopicFrame.add(labelErr);
-		//newTopicFrame.add(textAreadMsg);
 		newTopicFrame.add(scrollPane);
 		newTopicFrame.add(b);    
 		newTopicFrame.setLayout(null);    
@@ -375,7 +370,6 @@ public class IHM {
 		ihm.mainFrame.add(bok);
 		ihm.mainFrame.add(bre);
 		ihm.mainFrame.add(labelMsg);
-
 		ihm.mainFrame.setLayout(null);    
 		ihm.mainFrame.setVisible(true);  
 		

@@ -23,12 +23,12 @@ public class ClientHandler implements Runnable {
 	private ForumDatabase forumDatabase;
 	private User userClient;
 	private Server server;
-
+	private boolean isconnected = true;
+	private boolean islogged = false;
 	public static final String UDB_FILE_NAME ="userdatabase.db";	
 	public static final String FDB_FILE_NAME ="forumdatabase.db";	
 
-	public boolean isconnected = true;
-	public boolean islogged = false;
+
 
 	//public ArrayList<Topic> forum;
 	public ClientHandler(Socket client, Server server) {
@@ -37,7 +37,7 @@ public class ClientHandler implements Runnable {
 		this.forumDatabase=new ForumDatabase(FDB_FILE_NAME);
 		this.server=server;
 	}
-	
+
 
 
 	@Override
@@ -56,13 +56,11 @@ public class ClientHandler implements Runnable {
 
 				Request request;
 				request=(Request) in.readObject();
-				
-				
+				System.out.println(request);
+
 				// MAJ listes client et topics
 				userList = userDatabase.loadData();
 				topicList = forumDatabase.loadTopics();
-
-				//System.out.println(nb_tour);
 
 				try {	
 					switch(request.getClass().getSimpleName()) {
@@ -99,6 +97,7 @@ public class ClientHandler implements Runnable {
 					case "AccountCreationRequest":
 
 						AccountCreationRequest acreq = (AccountCreationRequest) request;
+
 						// on vérifie d'abord si le login est déjà pris ou pas
 						User userDemand = acreq.getUser(); 
 
@@ -118,7 +117,7 @@ public class ClientHandler implements Runnable {
 						}
 						System.out.println("connexion " + isconnected);
 						break ;
-						
+
 					case "LoadForumRequest":
 						if (islogged){
 							LoadForumRequest lfreq = (LoadForumRequest) request;
@@ -126,11 +125,11 @@ public class ClientHandler implements Runnable {
 							this.out.flush();
 						}
 						break ;
+
 					case "NewTopicRequest":
 						NewTopicRequest ntreq = (NewTopicRequest) request;
 
 						if (islogged){
-							//		ArrayList<Topic> topicList = forumDatabase.loadTopics();
 
 							// on vérifie si le topic a pas deja été fait 
 							if(!topicList.stream().map(x-> x.getTitle())
@@ -156,6 +155,7 @@ public class ClientHandler implements Runnable {
 								if (dtreq.getTopic().getTitle().equals("all")) topicList = (ArrayList<Topic>) topicList.stream()
 										.filter( x -> !x.getTitle().equals(dtreq.getTopic().getTitle()))
 										.collect(Collectors.toList());
+
 								// On supprime tous les topics
 								else topicList.clear();
 							}
@@ -166,6 +166,7 @@ public class ClientHandler implements Runnable {
 							forumDatabase.saveTopics(topicList);
 						}
 						break ;
+
 					case "LoadTopicRequest":
 						if (islogged){
 							LoadTopicRequest ltreq = (LoadTopicRequest) request;
@@ -179,32 +180,41 @@ public class ClientHandler implements Runnable {
 							}
 						}
 						break ;
+
 					case "NewMessageRequest":
 						if (islogged){
 							NewMessageRequest nmreq = (NewMessageRequest) request;	
-							System.out.println("msg ");
-							System.out.println(nmreq.getTopic().toStringMessages());
 
-							
-							topicList.set(topicList.stream().map(x -> x.getTitle())
-									.collect(Collectors.toList()).indexOf(nmreq.getTopic().getTitle()), 
-									nmreq.getTopic().addMessage(nmreq.getMessage()));
-							//System.out.println(nmreq.getTopic().toStringMessages());
-							
-							System.out.println("msg sauvegardé");
+							try {
 
-							// MAJ du forum
-							forumDatabase.saveTopics(topicList);
-							System.out.println("topic maj");
+								topicList.set(topicList.stream().map(x -> x.getTitle())
+										.collect(Collectors.toList()).indexOf(nmreq.getTopic().getTitle()), 
+										nmreq.getTopic().addMessage(nmreq.getMessage()));
 
-							// Envoie de la notification du message
-							this.server.sendNotification(nmreq); 
+								// MAJ du forum
+								forumDatabase.saveTopics(topicList);
+
+								// Envoie de la notification du message
+								this.server.sendNotification(nmreq); 
+
+								// Envoie de la confirmation de l'envoie au client 
+								out.writeObject(new NewMessageResponse(true));
+								this.out.flush();
+							}catch( Exception e) {
+								out.writeObject(new NewMessageResponse(false));
+								this.out.flush();
+							}
+
 						}
 						break ;
-						
+
 					case "CloseRequest":
+						System.out.println("le client veut se barer");
+
 						this.server.remove(this);
-						this.isconnected = false;
+						out.writeObject(new CloseResponse());
+						this.out.flush();
+						this.Disconect();
 						break ;
 						//e.printStackTrace();
 					}
@@ -221,25 +231,30 @@ public class ClientHandler implements Runnable {
 		}catch ( IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.out.println("on est sorti de la boucle");
-
+			System.out.println(e.toString());
 		} 
 
 	}
 	private synchronized  Response readResponse() throws ClassNotFoundException, IOException {
-		/*
-		 * TODO
-		 * Here you should read the server response from the input stream, then print it.
-		 * Note: the server only answers with String ;)
-		 */
 		return (Response) in.readObject() ;
-
 	}
 
 
-	
+
 	public ObjectOutputStream getOut() {
 		return this.out;
 	}
 
-	
+	public void Disconect() {
+		/*try {
+			this.in.close();
+			this.out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 */
+		this.isconnected=false;
+	}
+
 }
