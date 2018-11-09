@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.xml.crypto.Data;
+
 import shared.*;
+
 /*
 	thread qui communique avec le client
  */
@@ -49,6 +51,7 @@ public class ClientHandler implements Runnable {
 
 				Request request;
 				request=(Request) in.readObject();
+				System.out.println(request.toString());
 
 				// MAJ listes client et topics
 				userList = userDatabase.loadData();
@@ -204,7 +207,7 @@ public class ClientHandler implements Runnable {
 						this.server.remove(this);
 						out.writeObject(new CloseResponse());
 					//	this.out.flush();
-					//	this.Disconect();
+						this.Disconect();
 						break ;
 					}
 				} catch (IOException e) {

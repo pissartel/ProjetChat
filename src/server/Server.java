@@ -45,8 +45,6 @@ public class Server implements Runnable {
 
 				System.out.println("on démarre client handler");
 				t1.start();	
-
-				System.out.println(clientList);
 			}
 
 
@@ -57,9 +55,7 @@ public class Server implements Runnable {
 
 	}
 	public void remove(ClientHandler clientHandler){
-		System.out.println(this.clientList);
 		this.clientList.remove(clientHandler);
-		System.out.println(this.clientList);
 
 
 	}
@@ -72,7 +68,9 @@ public class Server implements Runnable {
 				x.getOut().flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				this.clientList.remove(x);
 				e.printStackTrace();
+				
 			}
 		});
 	}

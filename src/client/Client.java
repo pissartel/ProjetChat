@@ -202,10 +202,10 @@ public class Client {
 		try {
 			System.out.println("demande de quitte");
 			readResponse(new CloseRequest());   
+			this.threadRH.interrupt();
 			this.out.close();
 			this.in.close();
 			socket.close();
-			this.threadRH.interrupt();
 			return true;
 
 		} catch (IOException | ClassNotFoundException | InterruptedException  e) {

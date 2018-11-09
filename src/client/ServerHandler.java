@@ -28,11 +28,9 @@ public class  ServerHandler implements Runnable  {
 
 				Object ios = in.readObject();
 				//this.setResponse((Response) in.readObject()) ;
-				System.out.println(ios.getClass());
 
 				if (ios.getClass().getSimpleName().equals("Notification")){
 					notif = (Notification) ios;
-					System.out.println(notif.getClass());
 
 					// Test dans le cas ou on est pas dans un topic
 					if (!(this.getTopic()==null)) {
@@ -47,7 +45,6 @@ public class  ServerHandler implements Runnable  {
 								if (!(ihm.textPaneMessage.getText()=="")) builder.append(ihm.textPaneMessage.getText());
 								builder.append(notif.getMessage().toString());
 								ihm.textPaneMessage.setText(builder.toString());	
-								System.out.println(ihm.textPaneMessage.getText().length());
 								if ((ihm.textPaneMessage.getText()==""))ihm.messagesPane.setViewportView(ihm.textPaneMessage);
 								ihm.messagesPane.repaint();
 							}

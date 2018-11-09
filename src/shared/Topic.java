@@ -2,16 +2,14 @@ package shared;
 
 import java.util.ArrayList;
 
-import server.User;
-
 public class Topic extends Message{
 	private String author;
 	private ArrayList<Message> messages;
 	private String content;
 	private String title;
 	
-	public Topic(User author, String title, String content) {
-		super(author, content);
+	public Topic(server.User user, String title, String content) {
+		super(user, content);
 		// TODO Auto-generated constructor stub
 		this.setTitle(title);
 		this.setMessages(new ArrayList<Message>());

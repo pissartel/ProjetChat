@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 /**
  * This class represents the server database.
  * In this project, it will simply provides an API for the server to interact with the file system.
@@ -39,6 +38,7 @@ public class UserDatabase {
 	public ArrayList<User> loadData() throws IOException, ClassNotFoundException {
 		ArrayList<User> data = new ArrayList<User>();
 
+		
 		// This checks if the file actually exists
 		if(this.file.exists() && !this.file.isDirectory()) { 
 			FileInputStream fis = new FileInputStream(file);

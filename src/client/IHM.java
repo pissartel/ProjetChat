@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
+import server.User;
 import shared.Topic;
 
 public class IHM {
