@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import shared.Message;
 import shared.Topic;
+import shared.User;
 
 
 public class test_Database {

@@ -8,7 +8,7 @@ public class Topic extends Message{
 	private String content;
 	private String title;
 	
-	public Topic(server.User user, String title, String content) {
+	public Topic(shared.User user, String title, String content) {
 		super(user, content);
 		// TODO Auto-generated constructor stub
 		this.setTitle(title);

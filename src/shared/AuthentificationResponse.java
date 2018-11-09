@@ -1,7 +1,5 @@
 package shared;
 
-import server.User;
-
 public class AuthentificationResponse extends Response{
 	private boolean isAuthentified ;
 	private User user;

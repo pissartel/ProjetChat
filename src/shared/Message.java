@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import server.User;
-
 public class Message implements Serializable{
 	private String author;
 	private String content;

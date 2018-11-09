@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import server.User;
 import shared.*;
 
 public class Client {

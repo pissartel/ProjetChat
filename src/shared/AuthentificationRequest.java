@@ -1,7 +1,5 @@
 package shared;
 
-import server.User;
-
 public class AuthentificationRequest extends Request {
 	private User user;
 

@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import shared.User;
+
 /**
  * This class represents the server database.
  * In this project, it will simply provides an API for the server to interact with the file system.

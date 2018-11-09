@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.xml.crypto.Data;
 
 import shared.*;
+import  shared.User;
 
 /*
 	thread qui communique avec le client
@@ -222,7 +223,7 @@ public class ClientHandler implements Runnable {
 			}
 		}catch ( IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-	
+	e.printStackTrace();
 		} 
 
 	}

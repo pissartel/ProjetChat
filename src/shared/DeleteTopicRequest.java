@@ -1,7 +1,5 @@
 package shared;
 
-import server.User;
-
 public class DeleteTopicRequest extends Request {
 	private User user;
 	private Topic topic;
