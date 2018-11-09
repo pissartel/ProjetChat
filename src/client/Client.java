@@ -14,6 +14,7 @@ public class Client {
 	private User user;
 	private Topic currentTopic;
 	private  ServerHandler  serverHandler ;
+	private Thread threadRH;
 
 	public Client(){
 		try {
@@ -21,8 +22,8 @@ public class Client {
 			this.out = new ObjectOutputStream(socket.getOutputStream());
 			this.in = new ObjectInputStream(socket.getInputStream());
 			this.serverHandler = new  ServerHandler(this);
-			Thread threadRH = new Thread(this.serverHandler );
-			threadRH.start();
+			this.threadRH = new Thread(this.serverHandler );
+			this.threadRH.start();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -197,23 +198,20 @@ public class Client {
 
 	}
 
-	public void closeClient() {
+	public synchronized boolean closeClient() {
 		try {
-
-			Response rep = readResponse(new CloseRequest());
+			System.out.println("demande de quitte");
+			readResponse(new CloseRequest());   
 			this.out.close();
 			this.in.close();
 			socket.close();
+			this.threadRH.interrupt();
+			return true;
 
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException | InterruptedException  e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}    
 	}
 

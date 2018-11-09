@@ -57,14 +57,15 @@ public class Server implements Runnable {
 
 	}
 	public void remove(ClientHandler clientHandler){
+		System.out.println(this.clientList);
 		this.clientList.remove(clientHandler);
+		System.out.println(this.clientList);
+
 
 	}
 
 	public void sendNotification(NewMessageRequest nmreq) {
 		//Envoie d'une notificaiton du nouveau message à tout les clients connectés
-		System.out.println(this.clientList);
-
 		this.clientList.forEach(x->{
 			try {				
 				x.getOut().writeObject(new Notification(nmreq.getTopic(), nmreq.getMessage()) );

@@ -56,11 +56,11 @@ public class  ServerHandler implements Runnable  {
 
 				}
 				else { // on recoit une reponse à une requete envoyée
+
 					this.setResponse((Response) ios);
 					synchronized(this.in){
-						System.out.println("thread attend wait");
 						in.notify();
-						System.out.println("thread notify");
+
 					}
 				}
 			}

@@ -46,7 +46,6 @@ public class IHM {
 
 		// Frame principal
 		IHM ihm = new IHM(new JFrame("Chat Java"));
-		//	JFrame mainFrame = new JFrame("Chat Java");
 		ihm.mainFrame.setSize(850,650); // on set la size du frame
 		ihm.mainFrame.setLocationRelativeTo(null) ; // on centre le frame
 
@@ -102,7 +101,8 @@ public class IHM {
 		ihm.mainFrame.add(bco);
 		ihm.mainFrame.add(labelMsg);
 		ihm.mainFrame.setLayout(null);    
-		ihm.mainFrame.setVisible(true);    
+		ihm.mainFrame.setVisible(true);  
+		ihm.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création du client
 		Client client = new Client();
@@ -151,13 +151,12 @@ public class IHM {
 				}
 			}          
 		});
-		
+
 		ihm.mainFrame.addWindowListener(new WindowAdapter() {
-		    public void WindowClosing(WindowEvent e) {
-		    	client.closeClient();
-		    	
-		      //  ihm.mainFrame.dispose();
-		    }
+			public void WindowClosing(WindowEvent e) {
+				System.out.println("on ferme l'appli");
+				if (client.closeClient()) ihm.mainFrame.dispose();
+			}
 		});
 
 	}
@@ -368,11 +367,11 @@ public class IHM {
 		ihm.mainFrame.add(labelMsg);
 		ihm.mainFrame.setLayout(null);    
 		ihm.mainFrame.setVisible(true);  
-		
+
 		// On rajoute ihm et topic
 		client.getServerHandler().setIhm(ihm);
 		client.getServerHandler().setTopic(topic);
-		
+
 		bok.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -391,14 +390,14 @@ public class IHM {
 		bre.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-			
-						try {
-							client.getServerHandler().setTopic(null);
-							topicMenu( ihm, client) ;
-						} catch (ResponseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+
+				try {
+					client.getServerHandler().setTopic(null);
+					topicMenu( ihm, client) ;
+				} catch (ResponseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}          
 		});	

@@ -33,7 +33,6 @@ public class ClientHandler implements Runnable {
 	}
 
 
-
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -50,7 +49,6 @@ public class ClientHandler implements Runnable {
 
 				Request request;
 				request=(Request) in.readObject();
-				System.out.println(request);
 
 				// MAJ listes client et topics
 				userList = userDatabase.loadData();
@@ -61,8 +59,6 @@ public class ClientHandler implements Runnable {
 					// Authentification du client : on récupere les identifiants et on compare avec
 					// 								la database
 					case "AuthentificationRequest":
-						System.out.println("on rentre dans authentification");
-
 						AuthentificationRequest areq = (AuthentificationRequest) request;
 						User user = areq.getUser(); 
 						// On cherche si l'utilisateur existe et si son mdp est le bon
@@ -203,12 +199,13 @@ public class ClientHandler implements Runnable {
 						break ;
 
 					case "CloseRequest":
+						System.out.println("on ferme");
+
 						this.server.remove(this);
 						out.writeObject(new CloseResponse());
-						this.out.flush();
-						this.Disconect();
+					//	this.out.flush();
+					//	this.Disconect();
 						break ;
-						//e.printStackTrace();
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -222,9 +219,6 @@ public class ClientHandler implements Runnable {
 			}
 		}catch ( IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			System.out.println("on est sorti de la boucle");
-			System.out.println(e.toString());
-			System.out.println(e.getCause());
 	
 		} 
 
@@ -240,14 +234,6 @@ public class ClientHandler implements Runnable {
 	}
 
 	public void Disconect() {
-		/*try {
-			this.in.close();
-			this.out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 */
 		this.isconnected=false;
 	}
 
