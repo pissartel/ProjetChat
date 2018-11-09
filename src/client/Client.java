@@ -30,7 +30,7 @@ public class Client {
 		}
 	}
 
-	public  boolean  authenticate(String login, String password) throws ResponseException{
+	public boolean authenticate(String login, String password) throws ResponseException{
 		try {
 
 			Response rep = this.readResponse(new AuthentificationRequest(login,password));
@@ -84,21 +84,19 @@ public class Client {
 		}
 	}
 
-
-
-	public  synchronized ArrayList<Topic>  loadForum() throws ResponseException{
+	public  synchronized ArrayList<Topic>  loadChat() throws ResponseException{
 
 		try {
 
-			Response rep=this.readResponse(new LoadForumRequest());
+			Response rep=this.readResponse(new LoadChatRequest());
 
-			if (rep.getClass().getSimpleName().equals("LoadForumResponse")) {
-				ArrayList<Topic> listTopic=((LoadForumResponse) rep).topicList ;
+			if (rep.getClass().getSimpleName().equals("LoadChatResponse")) {
+				ArrayList<Topic> listTopic=((LoadChatResponse) rep).topicList ;
 				if ( !listTopic.isEmpty()) {
-					System.out.println("---------------------------------- FORUM ----------------------------------");
+					System.out.println("---------------------------------- Chat ----------------------------------");
 					listTopic.forEach(x->System.out.println("\n" + x.getTitle() + "\n par :" + x.getAuthor() + "\n"+"---------------------------------- \n"));
 				}
-				else System.out.println("Forum vide");
+				else System.out.println("Chat vide");
 				return listTopic;
 			}
 			else {
@@ -247,9 +245,6 @@ public class Client {
 	public  ServerHandler getServerHandler() {
 		return  serverHandler;
 	}
-
-
-
 
 
 }

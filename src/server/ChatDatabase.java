@@ -10,18 +10,15 @@ import java.util.ArrayList;
 
 import shared.Topic;
 
-public class ForumDatabase {
+public class ChatDatabase {
 
-	/**
-	 * The name of the file used to store the data
-	 */
 	private File file;
 
 	/**
 	 * Constructor
 	 * @param fileName the name of the file used to store the data
 	 */
-	public ForumDatabase(String fileName) {
+	public ChatDatabase(String fileName) {
 		this.file = new File(fileName);
 	}
 
@@ -36,7 +33,7 @@ public class ForumDatabase {
 			data=(ArrayList<Topic>)ois.readObject(); // cast en Arraylist de topics
 			
 		} else {
-			System.out.println("Le fichier de sauvegarde des topics forum n'existe pas.");
+			System.out.println("Le fichier de sauvegarde des topics chat n'existe pas.");
 			this.file.createNewFile();
 		}
 	

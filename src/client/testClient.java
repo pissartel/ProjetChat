@@ -2,7 +2,7 @@ package client;
 
 import server.Server;
 
-public class MainClient {
+public class testClient {
 
 	public static void main(String[] args) throws ResponseException {
 		Client client1 = new Client();
@@ -14,7 +14,7 @@ public class MainClient {
 		//client1.loadForum();
 //client1.newTopic("Règles du forum", "1ere regle du forum : il n'y a pas de regle sur le forum.");
 //	client1.deleteTopic("Règles du forum");
-	client1.loadForum();
+	client1.loadChat();
 	client1.loadTopic(0);
 //	client1.newMessage("coucou");
 //	client1.loadTopic(0);

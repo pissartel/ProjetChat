@@ -7,11 +7,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.xml.crypto.Data;
-
 import shared.*;
-
 /*
 	thread qui communique avec le client
  */
@@ -20,21 +17,18 @@ public class ClientHandler implements Runnable {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private UserDatabase userDatabase;
-	private ForumDatabase forumDatabase;
+	private ChatDatabase chatDatabase;
 	private User userClient;
 	private Server server;
 	private boolean isconnected = true;
 	private boolean islogged = false;
 	public static final String UDB_FILE_NAME ="userdatabase.db";	
-	public static final String FDB_FILE_NAME ="forumdatabase.db";	
+	public static final String FDB_FILE_NAME ="chatdatabase.db";	
 
-
-
-	//public ArrayList<Topic> forum;
 	public ClientHandler(Socket client, Server server) {
 		this.client = client;
 		this.userDatabase=new UserDatabase(UDB_FILE_NAME);
-		this.forumDatabase=new ForumDatabase(FDB_FILE_NAME);
+		this.chatDatabase=new ChatDatabase(FDB_FILE_NAME);
 		this.server=server;
 	}
 
@@ -52,7 +46,7 @@ public class ClientHandler implements Runnable {
 			while (this.isconnected) {
 
 				ArrayList<User> userList = userDatabase.loadData();
-				ArrayList<Topic> topicList = forumDatabase.loadTopics();
+				ArrayList<Topic> topicList = chatDatabase.loadTopics();
 
 				Request request;
 				request=(Request) in.readObject();
@@ -60,7 +54,7 @@ public class ClientHandler implements Runnable {
 
 				// MAJ listes client et topics
 				userList = userDatabase.loadData();
-				topicList = forumDatabase.loadTopics();
+				topicList = chatDatabase.loadTopics();
 
 				try {	
 					switch(request.getClass().getSimpleName()) {
@@ -118,10 +112,10 @@ public class ClientHandler implements Runnable {
 						System.out.println("connexion " + isconnected);
 						break ;
 
-					case "LoadForumRequest":
+					case "LoadChatRequest":
 						if (islogged){
-							LoadForumRequest lfreq = (LoadForumRequest) request;
-							out.writeObject(new LoadForumResponse(topicList));
+							LoadChatRequest lfreq = (LoadChatRequest) request;
+							out.writeObject(new LoadChatResponse(topicList));
 							this.out.flush();
 						}
 						break ;
@@ -137,9 +131,9 @@ public class ClientHandler implements Runnable {
 
 								out.writeObject(new NewTopicResponse(ntreq.getTopic()));
 								this.out.flush();
-								//MAJ du forum
+								//MAJ du Chat
 								topicList.add(ntreq.getTopic());
-								forumDatabase.saveTopics(topicList);
+								chatDatabase.saveTopics(topicList);
 							}
 							else 	out.writeObject(new NewTopicResponseFailure());
 
@@ -162,8 +156,8 @@ public class ClientHandler implements Runnable {
 
 							out.writeObject(new DeleteTopicResponse(true));
 							this.out.flush();
-							//MAJ du forum
-							forumDatabase.saveTopics(topicList);
+							//MAJ du chat
+							chatDatabase.saveTopics(topicList);
 						}
 						break ;
 
@@ -191,8 +185,8 @@ public class ClientHandler implements Runnable {
 										.collect(Collectors.toList()).indexOf(nmreq.getTopic().getTitle()), 
 										nmreq.getTopic().addMessage(nmreq.getMessage()));
 
-								// MAJ du forum
-								forumDatabase.saveTopics(topicList);
+								// MAJ du chat
+								chatDatabase.saveTopics(topicList);
 
 								// Envoie de la notification du message
 								this.server.sendNotification(nmreq); 
@@ -209,8 +203,6 @@ public class ClientHandler implements Runnable {
 						break ;
 
 					case "CloseRequest":
-						System.out.println("le client veut se barer");
-
 						this.server.remove(this);
 						out.writeObject(new CloseResponse());
 						this.out.flush();
@@ -232,6 +224,8 @@ public class ClientHandler implements Runnable {
 			// TODO Auto-generated catch block
 			System.out.println("on est sorti de la boucle");
 			System.out.println(e.toString());
+			System.out.println(e.getCause());
+	
 		} 
 
 	}

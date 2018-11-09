@@ -29,14 +29,14 @@ public class test_Database {
 		//list_topic.add(topic1);
 		//list_topic.add(topic2);
 	//	System.out.println(topic1.toString());
-		System.out.println("forumdatabase écrasée");
+		System.out.println("chatdatabase écrasée");
 
-		ForumDatabase forum = new ForumDatabase("forumdatabase.db");
-	//	forum.clearTopics();
+		ChatDatabase chat = new ChatDatabase("chatdatabase.db");
+	//	chat.clearTopics();
 
 				
 		try {
-			forum.saveTopics(list_topic);
+			chat.saveTopics(list_topic);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -44,7 +44,7 @@ public class test_Database {
 		 
 
 		try {
-			ArrayList<Topic> topics = forum.loadTopics() ;
+			ArrayList<Topic> topics = chat.loadTopics() ;
 			topics.forEach(x->System.out.println(x.toString()));
 			
 		} catch (ClassNotFoundException e) {

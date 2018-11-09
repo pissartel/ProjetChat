@@ -27,7 +27,6 @@ public class Server implements Runnable {
 		System.out.println("En attente de connexion...");
 	}
 
-
 	public void run(){
 
 		Socket client;
@@ -63,7 +62,7 @@ public class Server implements Runnable {
 	}
 
 	public void sendNotification(NewMessageRequest nmreq) {
-		//Envoie d'une notificaiton du'nnnouveau message à tout les clients connectés
+		//Envoie d'une notificaiton du nouveau message à tout les clients connectés
 		System.out.println(this.clientList);
 
 		this.clientList.forEach(x->{

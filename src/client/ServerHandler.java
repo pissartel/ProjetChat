@@ -1,29 +1,16 @@
 package client;
 
-import java.awt.Point;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-
-import server.ForumDatabase;
-import server.UserDatabase;
 import shared.*;
 
 public class  ServerHandler implements Runnable  {
-	private Socket socket;
 	private ObjectInputStream in;
 	private Topic topic;
 	private IHM ihm;
 	private Response rep;
-	private Client client; 
-
-	//public ArrayList<Topic> forum;
 
 	public  ServerHandler(Client client) {
-		this.client= client;
 		this.in = client.getOIS();
 	}
 
@@ -86,21 +73,13 @@ public class  ServerHandler implements Runnable  {
 		} 
 	}
 
-
-
-
 	public Topic getTopic() {
 		return topic;
 	}
 
-
-
 	public void setTopic(Topic topic) {
 		this.topic = topic;
 	}
-
-
-
 
 	public IHM getIhm() {
 		return ihm;
@@ -111,20 +90,13 @@ public class  ServerHandler implements Runnable  {
 		this.ihm = ihm;
 	}
 
-
-
-
 	public Response getResponse() {
 		return rep;
 	}
 
-
-
-
 	public void setResponse(Response rep) {
 		this.rep = rep;
 	}
-
 
 
 }

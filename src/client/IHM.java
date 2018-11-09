@@ -103,7 +103,6 @@ public class IHM {
 		ihm.mainFrame.add(labelMsg);
 		ihm.mainFrame.setLayout(null);    
 		ihm.mainFrame.setVisible(true);    
-		//ihm.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Création du client
 		Client client = new Client();
@@ -168,7 +167,7 @@ public class IHM {
 		ihm.mainFrame.getContentPane().removeAll();
 		ihm.mainFrame.repaint();
 
-		ArrayList<Topic> topicList = client.loadForum();
+		ArrayList<Topic> topicList = client.loadChat();
 
 		JLabel labelHead =new JLabel("Liste des topics"); 
 		labelHead.setForeground(Color.BLUE);
@@ -219,7 +218,7 @@ public class IHM {
 					if (index >= 0) {
 						//Object o = theList.getModel().getElementAt(index);
 						try {
-							client.loadForum();
+							client.loadChat();
 							topicFrame( ihm, client, client.loadTopic(theList.getSelectedIndex()));
 						} catch (ResponseException e) {
 							// TODO Auto-generated catch block
@@ -266,8 +265,6 @@ public class IHM {
 		JLabel labelErr = new JLabel();
 		labelErr.setBounds(50,250,140, 40); 
 		labelErr.setForeground(Color.RED);
-
-
 
 		//add to frame
 		newTopicFrame.add(labelTitle);
@@ -330,7 +327,6 @@ public class IHM {
 		contentPane.setBounds(50,55,largeur, 100); 
 
 		// affichage des messages 
-		//JLabel labelMessages =new JLabel(topic.toStringMessages()); 
 		JTextPane textPaneMessage = new JTextPane();
 		textPaneMessage.setEditable(false);
 		textPaneMessage.setText(topic.toStringMessages());
@@ -383,7 +379,6 @@ public class IHM {
 				try {
 					topic.getMessages().add(client.newMessage(textAreadMsg.getText()));
 					textAreadMsg.setText("");
-					//topicFrame( ihm.mainFrame, client, topic);
 
 				} catch (ResponseException e) {
 					// TODO Auto-generated catch block
