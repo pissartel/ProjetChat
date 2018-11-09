@@ -1,4 +1,5 @@
 package server;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +11,6 @@ import java.util.stream.Collectors;
 import javax.xml.crypto.Data;
 
 import shared.*;
-import  shared.User;
 
 /*
 	thread qui communique avec le client
@@ -239,6 +239,7 @@ public class ClientHandler implements Runnable {
 
 	public void Disconect() {
 		this.isconnected=false;
+		Thread.currentThread().interrupt();
 	}
 
 }

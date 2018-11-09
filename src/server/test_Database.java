@@ -15,11 +15,9 @@ public class test_Database {
 		// TODO Auto-generated method stub
 
 		ArrayList<User> list_user = new ArrayList<User>();
-		User user1 = new User("pierre", "123");
-		User user2 = new User("celestin", "123");
-		list_user.add(user1);
-		list_user.add(user2);
 		
+		UserDatabase userl = new UserDatabase("userdatabase.db");
+
 		ArrayList<Topic> list_topic = new ArrayList<Topic>();
 
 		//Topic topic1 = new Topic(user1, "Règles du chat", "Il n'y a pas de règles sur le chat.");
@@ -30,7 +28,7 @@ public class test_Database {
 		//list_topic.add(topic1);
 		//list_topic.add(topic2);
 	//	System.out.println(topic1.toString());
-		System.out.println("chatdatabase écrasée");
+		System.out.println("databases écrasées");
 
 		ChatDatabase chat = new ChatDatabase("chatdatabase.db");
 	//	chat.clearTopics();
@@ -38,6 +36,7 @@ public class test_Database {
 				
 		try {
 			chat.saveTopics(list_topic);
+			userl.saveData(list_user);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

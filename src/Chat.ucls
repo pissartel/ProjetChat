@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="client.IHM" project="ProjetChat" file="/ProjetChat/src/client/IHM.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="78" y="733"/>    
+    <position height="-1" width="-1" x="118" y="816"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="client.ServerHandler" project="ProjetChat" 
     file="/ProjetChat/src/client/ServerHandler.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="407" y="745"/>    
+    <position height="-1" width="-1" x="213" y="548"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="client.ResponseException" project="ProjetChat" 
     file="/ProjetChat/src/client/ResponseException.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="525" y="45"/>    
+    <position height="-1" width="-1" x="354" y="168"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="server.test_Database" project="ProjetChat" 
     file="/ProjetChat/src/server/test_Database.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="101" width="124" x="442" y="107"/>    
+    <position height="-1" width="-1" x="781" y="166"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="server.MainServer" project="ProjetChat" 
     file="/ProjetChat/src/server/MainServer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="101" width="124" x="606" y="107"/>    
+    <position height="-1" width="-1" x="776" y="57"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="server.Server" project="ProjetChat" file="/ProjetChat/src/server/Server.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="923" y="499"/>    
+    <position height="-1" width="-1" x="1232" y="455"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -75,7 +75,7 @@
   </class>  
   <class id="9" language="java" name="server.UserDatabase" project="ProjetChat" 
     file="/ProjetChat/src/server/UserDatabase.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1262" y="297"/>    
+    <position height="-1" width="-1" x="1260" y="254"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -84,7 +84,7 @@
   </class>  
   <class id="10" language="java" name="server.ChatDatabase" project="ProjetChat" 
     file="/ProjetChat/src/server/ChatDatabase.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1263" y="126"/>    
+    <position height="-1" width="-1" x="1259" y="82"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -120,7 +120,7 @@
   </class>  
   <class id="14" language="java" name="shared.Response" project="ProjetChat" file="/ProjetChat/src/shared/Response.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="341" y="1239"/>    
+    <position height="-1" width="-1" x="349" y="1288"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -138,7 +138,7 @@
   </class>  
   <class id="16" language="java" name="shared.AccountCreationRequest" project="ProjetChat" 
     file="/ProjetChat/src/shared/AccountCreationRequest.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1178" y="797"/>    
+    <position height="-1" width="-1" x="1179" y="815"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -147,7 +147,7 @@
   </class>  
   <class id="17" language="java" name="shared.AuthentificationRequest" project="ProjetChat" 
     file="/ProjetChat/src/shared/AuthentificationRequest.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1220" y="648"/>    
+    <position height="-1" width="-1" x="1169" y="686"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -156,7 +156,7 @@
   </class>  
   <class id="18" language="java" name="shared.CloseRequest" project="ProjetChat" 
     file="/ProjetChat/src/shared/CloseRequest.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1421" y="654"/>    
+    <position height="-1" width="-1" x="1385" y="678"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -165,7 +165,7 @@
   </class>  
   <class id="19" language="java" name="shared.LoadTopicRequest" project="ProjetChat" 
     file="/ProjetChat/src/shared/LoadTopicRequest.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1563" y="653"/>    
+    <position height="-1" width="-1" x="1555" y="688"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -210,7 +210,7 @@
   </class>  
   <class id="24" language="java" name="shared.LoadTopicResponse" project="ProjetChat" 
     file="/ProjetChat/src/shared/LoadTopicResponse.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="770" y="1165"/>    
+    <position height="-1" width="-1" x="776" y="1182"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -237,7 +237,7 @@
   </class>  
   <class id="27" language="java" name="shared.LoadChatResponse" project="ProjetChat" 
     file="/ProjetChat/src/shared/LoadChatResponse.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="738" y="1279"/>    
+    <position height="-1" width="-1" x="775" y="1303"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -264,7 +264,7 @@
   </class>  
   <class id="30" language="java" name="shared.AuthentificationResponse" project="ProjetChat" 
     file="/ProjetChat/src/shared/AuthentificationResponse.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="531" y="1037"/>    
+    <position height="-1" width="-1" x="504" y="1127"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -298,300 +298,357 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="34">    
+  <class id="34" language="java" name="shared.User" project="ProjetChat" file="/ProjetChat/src/shared/User.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="902" y="725"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="35">    
     <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="35" name="topic">        
+      <attribute id="36" name="topic">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="36" minimum="0" maximum="1">        
+      <multiplicity id="37" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="37">    
+  <association id="38">    
     <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="38" name="topic">        
+      <attribute id="39" name="topic">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="39" minimum="0" maximum="1">        
+      <multiplicity id="40" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="40">    
+  <generalization id="41">    
     <end type="SOURCE" refId="23"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <generalization id="41">    
+  <generalization id="42">    
     <end type="SOURCE" refId="31"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="42">    
+  <generalization id="43">    
     <end type="SOURCE" refId="25"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <association id="43">    
+  <association id="44">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="44" name="messages">        
+      <attribute id="45" name="messages">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="45" minimum="0" maximum="2147483647">        
+      <multiplicity id="46" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="32" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="46">    
+  <association id="47">    
     <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="47" name="topicList">        
+      <attribute id="48" name="topicList">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="48" minimum="0" maximum="2147483647">        
+      <multiplicity id="49" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="49">    
+  <generalization id="50">    
     <end type="SOURCE" refId="22"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <association id="50">    
+  <association id="51">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="51" name="ihm">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="52" name="ihm">        
+        <position height="0" width="0" x="40" y="83"/>      
       </attribute>      
-      <multiplicity id="52" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="53" minimum="0" maximum="1">        
+        <position height="0" width="0" x="40" y="83"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="53">    
+  <association id="54">    
     <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="54" name="newTopic">        
+      <attribute id="55" name="newTopic">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="55" minimum="0" maximum="1">        
+      <multiplicity id="56" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="56">    
+  <association id="57">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="58" name="user"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="57" name="clientList">        
+      <attribute id="61" name="clientList">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="58" minimum="0" maximum="2147483647">        
+      <multiplicity id="62" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="59">    
+  <generalization id="63">    
     <end type="SOURCE" refId="18"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <generalization id="60">    
+  <generalization id="64">    
     <end type="SOURCE" refId="21"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <association id="61">    
+  <association id="65">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="62" name="message">        
+      <attribute id="66" name="message">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="63" minimum="0" maximum="1">        
+      <multiplicity id="67" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="32" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="64">    
+  <association id="68">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="65" name="userDatabase">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="69" name="userDatabase">        
+        <position height="0" width="0" x="-2" y="-43"/>      
       </attribute>      
-      <multiplicity id="66" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="70" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-2" y="-43"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="67">    
+  <generalization id="71">    
     <end type="SOURCE" refId="16"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <association id="68">    
+  <association id="72">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="73" name="user"/>      
+      <multiplicity id="74" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="69" name="topic">        
+      <attribute id="76" name="topic">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="70" minimum="0" maximum="1">        
+      <multiplicity id="77" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="71">    
+  <generalization id="78">    
     <end type="SOURCE" refId="27"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="72">    
+  <generalization id="79">    
     <end type="SOURCE" refId="24"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <association id="73">    
+  <association id="80">    
     <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="74" name="topic">        
+      <attribute id="81" name="topic">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="75" minimum="0" maximum="1">        
+      <multiplicity id="82" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="76">    
+  <association id="83">    
     <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="77" name="message">        
+      <attribute id="84" name="message">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="78" minimum="0" maximum="1">        
+      <multiplicity id="85" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="32" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="79">    
+  <generalization id="86">    
     <end type="SOURCE" refId="28"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="80">    
+  <association id="87">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="88" name="user"/>      
+      <multiplicity id="89" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="90">    
     <end type="SOURCE" refId="19"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <generalization id="81">    
+  <generalization id="91">    
     <end type="SOURCE" refId="26"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <association id="82">    
+  <association id="92">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="83" name="serverHandler">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="93" name="serverHandler">        
+        <position height="0" width="0" x="-194" y="-197"/>      
       </attribute>      
-      <multiplicity id="84" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="94" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-194" y="-197"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="85">    
+  <generalization id="95">    
     <end type="SOURCE" refId="29"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="86">    
+  <generalization id="96">    
     <end type="SOURCE" refId="30"/>    
     <end type="TARGET" refId="14"/>  
   </generalization>  
-  <generalization id="87">    
+  <generalization id="97">    
     <end type="SOURCE" refId="20"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <association id="88">    
+  <association id="98">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="89" name="currentTopic">        
+      <attribute id="99" name="currentTopic">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="90" minimum="0" maximum="1">        
+      <multiplicity id="100" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="91">    
+  <association id="101">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="102" name="user"/>      
+      <multiplicity id="103" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="104">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="105" name="user"/>      
+      <multiplicity id="106" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="107">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="92" name="rep">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="108" name="rep">        
+        <position height="0" width="0" x="8" y="49"/>      
       </attribute>      
-      <multiplicity id="93" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="109" minimum="0" maximum="1">        
+        <position height="0" width="0" x="8" y="49"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="94">    
+  <generalization id="110">    
     <end type="SOURCE" refId="17"/>    
     <end type="TARGET" refId="12"/>  
   </generalization>  
-  <generalization id="95">    
+  <generalization id="111">    
     <end type="SOURCE" refId="13"/>    
     <end type="TARGET" refId="32"/>  
   </generalization>  
-  <association id="96">    
+  <association id="112">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="97" name="topic">        
+      <attribute id="113" name="topic">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="98" minimum="0" maximum="1">        
+      <multiplicity id="114" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="99">    
+  <association id="115">    
     <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="100" name="newTopicCreated">        
+      <attribute id="116" name="newTopicCreated">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="101" minimum="0" maximum="1">        
+      <multiplicity id="117" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="102">    
+  <association id="118">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="103" name="chatDatabase">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="119" name="chatDatabase">        
+        <position height="0" width="0" x="-4" y="-44"/>      
       </attribute>      
-      <multiplicity id="104" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="120" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-4" y="-44"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="105">    
+  <association id="121">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="106" name="server">        
-        <position height="0" width="0" x="-94" y="92"/>      
+      <attribute id="122" name="server">        
+        <position height="0" width="0" x="215" y="48"/>      
       </attribute>      
-      <multiplicity id="107" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-94" y="92"/>      
+      <multiplicity id="123" minimum="0" maximum="1">        
+        <position height="0" width="0" x="215" y="48"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="124">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="125" name="userClient"/>      
+      <multiplicity id="126" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
