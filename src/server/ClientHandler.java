@@ -52,7 +52,6 @@ public class ClientHandler implements Runnable {
 
 				Request request;
 				request=(Request) in.readObject();
-				System.out.println(request.toString());
 
 				// MAJ listes client et topics
 				userList = userDatabase.loadData();
@@ -242,6 +241,7 @@ public class ClientHandler implements Runnable {
 
 	public void Disconect() {
 		this.isconnected=false;
+		System.out.println("Fermeture ClientHandler");
 		Thread.currentThread().interrupt();
 	}
 
