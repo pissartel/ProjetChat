@@ -207,7 +207,6 @@ public class ClientHandler implements Runnable {
 
 						this.server.remove(this);
 						out.writeObject(new CloseResponse());
-					//	this.out.flush();
 						this.Disconect();
 						break ;
 					}
@@ -221,10 +220,14 @@ public class ClientHandler implements Runnable {
 				}
 
 			}
-		}catch ( IOException | ClassNotFoundException e) {
+		}catch ( IOException   e) {
 			// TODO Auto-generated catch block
-	e.printStackTrace();
-		} 
+			this.server.remove(this);
+			this.Disconect();
+
+		} catch(ClassNotFoundException e) {
+
+		}
 
 	}
 	private synchronized  Response readResponse() throws ClassNotFoundException, IOException {
