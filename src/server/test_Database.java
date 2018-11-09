@@ -10,7 +10,7 @@ import shared.Topic;
 
 public class test_Database {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 
 		ArrayList<User> list_user = new ArrayList<User>();
@@ -46,10 +46,7 @@ public class test_Database {
 		try {
 			ArrayList<Topic> topics = chat.loadTopics() ;
 			topics.forEach(x->System.out.println(x.toString()));
-			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
